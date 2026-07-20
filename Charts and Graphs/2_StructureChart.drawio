@@ -1,0 +1,413 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="bCGwj_GgjL8qtJKJF2BR">
+    <mxGraphModel dx="1548" dy="1060" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="kLdtq5_1ORtx45rab1J8-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="AGOOBIZ CONNECT&amp;nbsp;" vertex="1">
+          <mxGeometry height="60" width="120" x="600" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Manager Guest" vertex="1">
+          <mxGeometry height="60" width="120" x="50" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="View Product&amp;nbsp;" vertex="1">
+          <mxGeometry height="30" width="80" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Product Details" vertex="1">
+          <mxGeometry height="30" width="80" x="90" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Search Product&amp;nbsp;" vertex="1">
+          <mxGeometry height="30" width="80" x="180" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Manager&amp;nbsp;&lt;div&gt;Costumer&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="310" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;aspect=fixed;" value="Register/ Login" vertex="1">
+          <mxGeometry height="30" width="80" x="60" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Place&lt;div&gt;Order&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="150" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Make&lt;div&gt;Payment&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="240" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Order&lt;div&gt;Status&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="330" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="View&amp;nbsp;&lt;div&gt;Product&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="420" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Manage&lt;div&gt;Seller&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="720" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-13" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Register Business&amp;nbsp;" vertex="1">
+          <mxGeometry height="60" width="120" x="720" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Upload&amp;nbsp;&lt;div&gt;Product&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="570" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="View&lt;div&gt;Product&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="910" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Manage&lt;div&gt;Order&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="800" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="View&lt;div&gt;Seller&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="690" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-18" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Manage Admin" vertex="1">
+          <mxGeometry height="60" width="120" x="1160" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Manage Users&amp;nbsp;" vertex="1">
+          <mxGeometry height="60" width="120" x="1160" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-20" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Handle&lt;div&gt;Reports&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="1060" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-21" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Approve/&lt;div&gt;Reject Seller&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="1180" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-22" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Generate&amp;nbsp;&lt;div&gt;Reports&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="1280" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-23" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="660" y="80" as="sourcePoint" />
+            <mxPoint x="660" y="60" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-24" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="110" y="80" as="sourcePoint" />
+            <mxPoint x="1220" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-25" edge="1" parent="1" source="kLdtq5_1ORtx45rab1J8-18" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1220" y="139.28932188134524" as="sourcePoint" />
+            <mxPoint x="1220" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-26" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="780" y="160" as="sourcePoint" />
+            <mxPoint x="780" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-27" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="320" as="sourcePoint" />
+            <mxPoint x="370" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-28" edge="1" parent="1" source="kLdtq5_1ORtx45rab1J8-2" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="160" y="160" as="sourcePoint" />
+            <mxPoint x="110" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-29" edge="1" parent="1" source="kLdtq5_1ORtx45rab1J8-4" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="kLdtq5_1ORtx45rab1J8-2" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="130" y="190" />
+            </Array>
+            <mxPoint x="90" y="270" as="sourcePoint" />
+            <mxPoint x="130" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-30" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="40" y="280" as="sourcePoint" />
+            <mxPoint x="40" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-31" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="220" y="280" as="sourcePoint" />
+            <mxPoint x="220" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-32" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="40" y="250" as="sourcePoint" />
+            <mxPoint x="220" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-36" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Guest Details&amp;nbsp;">
+          <mxGeometry relative="1" width="80" x="0.3333" y="40" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="140" y="200" as="sourcePoint" />
+            <mxPoint x="140" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-38" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=0;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Guest Management&amp;nbsp;">
+          <mxGeometry relative="1" width="80" x="-0.3333" y="-60" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="120" y="120" as="sourcePoint" />
+            <mxPoint x="120" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-39" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=0;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Costumer Management&amp;nbsp;">
+          <mxGeometry relative="1" width="80" x="-0.3333" y="-60" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="380" y="310" as="sourcePoint" />
+            <mxPoint x="380" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-40" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="410" as="sourcePoint" />
+            <mxPoint x="370" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-41" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="100" y="480" as="sourcePoint" />
+            <mxPoint x="100" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-42" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="100" y="410" as="sourcePoint" />
+            <mxPoint x="460" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-43" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="190" y="480" as="sourcePoint" />
+            <mxPoint x="190" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-44" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="280" y="480" as="sourcePoint" />
+            <mxPoint x="280" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-45" edge="1" parent="1" source="kLdtq5_1ORtx45rab1J8-10" style="endArrow=none;html=1;rounded=0;exitX=0.625;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="480" as="sourcePoint" />
+            <mxPoint x="380" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-46" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="460" y="480" as="sourcePoint" />
+            <mxPoint x="460" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-47" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=0;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;fontSize=8;" value="User&amp;nbsp;&lt;div&gt;credentials&amp;nbsp;&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" x="0.2" y="-30" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="90" y="420" as="sourcePoint" />
+            <mxPoint x="90" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-48" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;fontSize=8;" value="Order&lt;div&gt;Data&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" x="0.6" y="20" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="200" y="420" as="sourcePoint" />
+            <mxPoint x="200" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-49" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;fontSize=8;" value="Payment&amp;nbsp;&lt;div&gt;&amp;nbsp;Details&amp;nbsp;&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" x="0.6" y="30" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="290" y="420" as="sourcePoint" />
+            <mxPoint x="290" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-50" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=0;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;fontSize=8;" value="Status&amp;nbsp;&lt;div&gt;Request&amp;nbsp;&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" x="0.2" y="20" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="390" y="420" as="sourcePoint" />
+            <mxPoint x="390" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-51" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Product&amp;nbsp;&lt;div&gt;Data&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" x="0.6" y="30" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="470" y="420" as="sourcePoint" />
+            <mxPoint x="470" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-52" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=0;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Seller Management&amp;nbsp;">
+          <mxGeometry relative="1" width="80" x="-0.6" y="-50" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="790" y="140" as="sourcePoint" />
+            <mxPoint x="790" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-53" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Business Registration&amp;nbsp;">
+          <mxGeometry relative="1" width="80" x="0.5" y="60" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="790" y="230" as="sourcePoint" />
+            <mxPoint x="790" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-54" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="kLdtq5_1ORtx45rab1J8-12" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="780" y="280" as="sourcePoint" />
+            <mxPoint x="830" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-55" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="780" y="370" as="sourcePoint" />
+            <mxPoint x="780" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-56" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="610" y="440" as="sourcePoint" />
+            <mxPoint x="610" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-57" edge="1" parent="1" source="kLdtq5_1ORtx45rab1J8-15" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="920" y="440" as="sourcePoint" />
+            <mxPoint x="950" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-58" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="610" y="370" as="sourcePoint" />
+            <mxPoint x="950" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-59" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="740" y="440" as="sourcePoint" />
+            <mxPoint x="740" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-60" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="840" y="440" as="sourcePoint" />
+            <mxPoint x="840" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-61" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=0;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Product&amp;nbsp;&lt;div&gt;Details&amp;nbsp;&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" x="0.6" y="30" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="620" y="380" as="sourcePoint" />
+            <mxPoint x="620" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-62" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Sales&lt;div&gt;Report&amp;nbsp;&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" x="0.6" y="30" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="750" y="380" as="sourcePoint" />
+            <mxPoint x="750" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-63" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Order&amp;nbsp;&lt;div&gt;Updates&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" x="0.6" y="20" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="850" y="380" as="sourcePoint" />
+            <mxPoint x="850" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-64" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Seller&amp;nbsp;&lt;div&gt;Data&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" x="0.6" y="20" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="960" y="380" as="sourcePoint" />
+            <mxPoint x="960" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-65" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=0;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Admin Management&amp;nbsp;">
+          <mxGeometry relative="1" width="80" x="-0.6667" y="-60" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1240" y="150" as="sourcePoint" />
+            <mxPoint x="1240" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-66" edge="1" parent="1" source="kLdtq5_1ORtx45rab1J8-19" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1170" y="270" as="sourcePoint" />
+            <mxPoint x="1220" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-67" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Users Management&amp;nbsp;">
+          <mxGeometry relative="1" width="80" x="0.5" y="50" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1230" y="230" as="sourcePoint" />
+            <mxPoint x="1230" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-68" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1220" y="380" as="sourcePoint" />
+            <mxPoint x="1220" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-69" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Business System&amp;nbsp;">
+          <mxGeometry relative="1" width="80" y="50" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="790" y="350" as="sourcePoint" />
+            <mxPoint x="790" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-70" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Costumer Details&amp;nbsp;">
+          <mxGeometry relative="1" width="80" y="50" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="380" y="390" as="sourcePoint" />
+            <mxPoint x="380" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-71" edge="1" parent="1" source="kLdtq5_1ORtx45rab1J8-20" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1050" y="430" as="sourcePoint" />
+            <mxPoint x="1100" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-72" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1340" y="440" as="sourcePoint" />
+            <mxPoint x="1340" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-73" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1100" y="380" as="sourcePoint" />
+            <mxPoint x="1340" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-74" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1230" y="440" as="sourcePoint" />
+            <mxPoint x="1230" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-75" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Users Management&amp;nbsp;">
+          <mxGeometry relative="1" width="80" y="60" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1230" y="350" as="sourcePoint" />
+            <mxPoint x="1230" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-76" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=0;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Report Data">
+          <mxGeometry relative="1" width="80" x="0.3333" y="40" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1110" y="390" as="sourcePoint" />
+            <mxPoint x="1110" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-77" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=0;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;" value="Approval Status">
+          <mxGeometry relative="1" width="80" x="0.32" y="40" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1240" y="390" as="sourcePoint" />
+            <mxPoint x="1240" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kLdtq5_1ORtx45rab1J8-78" edge="1" parent="1" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=open;startSize=6;endSize=8;curved=0;rounded=0;fontSize=10;" value="Reports&amp;nbsp;">
+          <mxGeometry relative="1" width="80" x="0.6" y="30" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1350" y="390" as="sourcePoint" />
+            <mxPoint x="1350" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
