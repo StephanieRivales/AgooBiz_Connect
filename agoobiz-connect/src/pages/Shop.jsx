@@ -1,15 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useCart } from "../context/CartContext";
+import { productsApi } from "../api/productsApi";
 import "../App.css";
-
-// TODO: replace with real data from your backend/API
-const sampleProducts = [
-  { id: 1, name: "Pancit Canton", seller: "Nanay Cora's Kitchen", price: 120, category: "Pancit", image: "/products/pancit.jpg" },
-  { id: 2, name: "Bibingka", seller: "Aling Rosa's Kakanin", price: 90, category: "Rice & Kakanin", image: "/products/bibingka.jpg" },
-  { id: 3, name: "Lechon Kawali", seller: "Kuya Jun's Grill", price: 250, category: "Meat Dishes", image: "/products/lechon.jpg" },
-  { id: 4, name: "Leche Flan", seller: "Sweet Treats by Marie", price: 150, category: "Desserts", image: "/products/flan.jpg" },
-  { id: 5, name: "Fiesta Platter", seller: "Home Kitchen Bulacan", price: 850, category: "Party Platters", image: "/products/platter.jpg" },
-];
 
 const categories = [
   "All",
@@ -22,9 +14,26 @@ const categories = [
 
 export default function Shop() {
   const { addToCart } = useCart();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [addedId, setAddedId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("All");
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await productsApi.getAll();
+        setProducts(data);
+      } catch (err) {
+        setError("We couldn't load the products right now. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const handleAdd = (product) => {
     addToCart(product, 1);
@@ -33,14 +42,15 @@ export default function Shop() {
   };
 
   const filteredProducts = useMemo(() => {
-    return sampleProducts.filter((product) => {
+    return products.filter((product) => {
+      const sellerName = product.seller?.name || "";
       const matchesSearch =
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.seller.toLowerCase().includes(searchTerm.toLowerCase());
+        sellerName.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = category === "All" || product.category === category;
       return matchesSearch && matchesCategory;
     });
-  }, [searchTerm, category]);
+  }, [products, searchTerm, category]);
 
   return (
     <section className="shop-page">
@@ -67,8 +77,16 @@ export default function Shop() {
         </div>
       </div>
 
-      {filteredProducts.length === 0 ? (
-        <p className="empty-state">No products match your search.</p>
+      {loading ? (
+        <p className="empty-state">Loading products...</p>
+      ) : error ? (
+        <p className="empty-state">{error}</p>
+      ) : filteredProducts.length === 0 ? (
+        <p className="empty-state">
+          {products.length === 0
+            ? "No sellers have posted any products yet. Check back soon!"
+            : "No products match your search."}
+        </p>
       ) : (
         <div className="product-grid">
           {filteredProducts.map((product) => (
@@ -83,7 +101,7 @@ export default function Shop() {
               <div className="product-info">
                 <span className="product-category">{product.category}</span>
                 <h3>{product.name}</h3>
-                <p className="product-seller">by {product.seller}</p>
+                <p className="product-seller">by {product.seller?.name || "Unknown Seller"}</p>
                 <div className="product-footer">
                   <span className="product-price">₱{product.price}</span>
                   <button
