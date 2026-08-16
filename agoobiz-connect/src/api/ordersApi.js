@@ -1,7 +1,19 @@
-import api from './api';
+import api from "./api";
 
-export const placeOrder = (orderData) => api.post('/orders', orderData);
-export const getOrders = (params) => api.get('/orders', { params });
-export const getOrder = (id) => api.get(`/orders/${id}`);
-export const updateOrder = (id, orderData) => api.put(`/orders/${id}`, orderData);
-export const deleteOrder = (id) => api.delete(`/orders/${id}`);
+// Centralizes every order-related API call so pages don't repeat fetch logic.
+export const ordersApi = {
+  getAll: async () => {
+    const res = await api.get("/orders");
+    return res.data;
+  },
+
+  create: async (orderData) => {
+    const res = await api.post("/orders", orderData);
+    return res.data;
+  },
+
+  updateStatus: async (id, status) => {
+    const res = await api.put(`/orders/${id}/status`, { status });
+    return res.data;
+  },
+};
