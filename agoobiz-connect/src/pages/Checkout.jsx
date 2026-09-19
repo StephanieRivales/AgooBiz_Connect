@@ -5,9 +5,9 @@ import { useAuth } from "../context/AuthContext";
 import "../App.css";
 
 const paymentMethods = [
-  { key: "cod", label: "Cash on Delivery"},
-  { key: "gcash", label: "GCash"},
-  { key: "card", label: "Credit/Debit Card"},
+  { key: "cod", label: "Cash on Delivery", icon: "💵" },
+  { key: "gcash", label: "GCash", icon: "📱" },
+  { key: "card", label: "Credit/Debit Card", icon: "💳" },
 ];
 
 export default function Checkout() {
@@ -149,4 +149,16 @@ export default function Checkout() {
             <span>Subtotal</span>
             <span>₱{cartTotal.toFixed(2)}</span>
           </div>
-          <div className="checko
+          <div className="checkout-summary-row">
+            <span>Delivery Fee</span>
+            <span>₱{deliveryFee.toFixed(2)}</span>
+          </div>
+          <div className="checkout-summary-row checkout-summary-total">
+            <span>Total</span>
+            <span>₱{grandTotal.toFixed(2)}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

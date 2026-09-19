@@ -42,7 +42,7 @@ export default function App() {
             <Route path="/shop" element={<Shop />} />
             <Route path="/my-orders" element={<MyOrders />} />
             <Route path="/logout" element={<Logout />} />
-            <Route path="/Chat" element={
+            <Route path="/chat" element={
               <ProtectedRoute>
                 <Chat />
               </ProtectedRoute>

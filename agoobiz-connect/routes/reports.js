@@ -6,7 +6,7 @@ const { fn, col, literal } = require("sequelize");
 const { Order, OrderItem, Product, User } = require("../models");
 const authenticate = require("../middleware/auth");
 const requireRole = require("../middleware/requireRole");
-const { ok, fail } = require("../lib/response");
+const { ok, fail } = require("../lib/responses");
 
 // Admin: the big-picture numbers for the whole marketplace.
 router.get("/summary", authenticate, requireRole("admin"), async (req, res) => {

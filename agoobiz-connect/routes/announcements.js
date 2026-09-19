@@ -4,7 +4,7 @@ const router = express.Router();
 const { Announcement } = require("../models");
 const authenticate = require("../middleware/auth");
 const requireRole = require("../middleware/requireRole");
-const { ok, fail } = require("../utils/response");
+const { ok, fail } = require("../lib/responses");
 
 // Public — shown on the homepage or a notices banner.
 router.get("/", async (req, res) => {
