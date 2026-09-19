@@ -92,23 +92,18 @@
 | package.json | Source Code | `AgooBiz_Connect/node_modules/split2/package.json` | Rivales | Version 4.2 | On-going |
 | package.json | Source Code | `AgooBiz_Connect/node_modules/xtend/package.json` | Rivales | Version 4.0.2 | On-going |
 | README.md | Documents | `AgooBiz_Connect/agoobiz-connect/README.md` | Estacio | Version 1.2 | On-going |
-| README.md | Documents | `AgooBiz_Connect/Related Studies/README.md` | Estacio | Version 1.2 | On-going |
-| README.md | Documents | `AgooBiz_Connect/Charts and Graphs/README.md` | Rivales | Version 1.1 | On-going |
-| stage0.drawio.svg | Documents | `AgooBiz_Connect/Charts and Graphs/01_DFD/stage0.drawio.svg` | Rivales | Version 1.1 | On-going |
-| stage1.svg | Documents | `AgooBiz_Connect/Charts and Graphs/01_DFD/stage1.svg` | Rivales | Version 1.1 | On-going |
-| stage2.svg | Documents | `AgooBiz_Connect/Charts and Graphs/01_DFD/stage2.svg` | Rivales | Version 1.1 | On-going |
-| 02_Structure_Chart.drawio.svg | Documents | `AgooBiz_Connect/Charts and Graphs/02_Structure_Chart.drawio.svg` | Rivales | Version 1 | On-going |
-| README.md | Documents | `AgooBiz_Connect/agoobiz-connect/README.md` | Estacio | Version 1.2 | On-going |
-| README.md | Documents | `AgooBiz_Connect/Related Studies/README.md` | Estacio | Version 1.2 | On-going |
-| README.md | Documents | `AgooBiz_Connect/Charts and Graphs/README.md` | Rivales | Version 1.1 | On-going |
-| stage0.drawio.svg | Documents | `AgooBiz_Connect/Charts and Graphs/01_DFD/stage0.drawio.svg` | Rivales | Version 1.1 | On-going |
-| stage1.svg | Documents | `AgooBiz_Connect/Charts and Graphs/01_DFD/stage1.svg` | Rivales | Version 1.1 | On-going |
-| stage2.svg | Documents | `AgooBiz_Connect/Charts and Graphs/01_DFD/stage2.svg` | Rivales | Version 1.1 | On-going |
-| 02_Structure_Chart.drawio.svg | Documents | `AgooBiz_Connect/Charts and Graphs/02_Structure_Chart.drawio.svg` | Rivales | Version 1 | On-going |
-| README.md | Documents | `AgooBiz_Connect/agoobiz-connect/README.md` | Estacio | Version 1.2 | On-going |
-| README.md | Documents | `AgooBiz_Connect/Related Studies/README.md` | Estacio | Version 1.2 | On-going |
-| README.md | Documents | `AgooBiz_Connect/Charts and Graphs/README.md` | Rivales | Version 1.1 | On-going |
-| stage0.drawio.svg | Documents | `AgooBiz_Connect/Charts and Graphs/01_DFD/stage0.drawio.svg` | Rivales | Version 1.1 | On-going |
+| README.md | Documents | `AgooBiz_Connect/Documents/Related Studies/README.md` | Estacio | Version 1.2 | On-going |
+| README.md | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/README.md` | Rivales | Version 1.1 | On-going |
+| stage0.drawio.svg | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/01_DFD/stage0.drawio.svg` | Refuerzo | Version 1.1 | On-going |
+| stage1.svg | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/01_DFD/stage1.svg` | Refuerzo | Version 1.1 | On-going |
+| stage2.svg | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/01_DFD/stage2.svg` | Rivales | Version 1.1 | On-going |
+| 02_Structure_Chart.drawio.svg | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/02_Structure_Chart.drawio.svg` | Rivales & Amer | Version 1 | On-going |
+| 03_HIPO_Diagram.drawio.svg | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/02_HIPO_Diagram.drawio.svg` | Rivales & Estacio | Version 1 | On-going |
+| 04_Structured_English.md | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/04_Structured_English.md` | Rivales | Version 1 | On-going |
+| 05_Pseudo_code.md | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/05_Pseudo_code.md` | Rivales | Version 1 | On-going |
+| 06_ERD_drawio.svg | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/06_ERD_drawio.svg` | Rivales & Estacio | Version 1 | On-going |
+| 07_Data_Dictionary.md | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/07_Data_Dictionary.md` | Rivales | Version 1 | On-going |
+| Charts&Graphs_Explanation.md | Documents | `AgooBiz_Connect/Documents/Charts and Graphs/Charts&Graphs_Explanation.md` | Rivales | Version 1 | On-going |
 | .gitignore | Build/Config Scripts | `AgooBiz_Connect/agoobiz-connect/.gitignore` | Rivales | Version 1 | On-going |
 | manifest.json | Build/Config Scripts | `AgooBiz_Connect/agoobiz-connect/public/manifest.json` | Rivales | Version 1 | On-going |
 | robots.txt | Build/Config Scripts | `AgooBiz_Connect/agoobiz-connect/public/robots.txt` | Rivales | Version 1 | On-going |
