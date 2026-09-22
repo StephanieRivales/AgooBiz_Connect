@@ -1,7 +1,7 @@
 export const menus = {
   admin: ["Home", "Dashboard", "Users", "Settings", "Logout"],
-  seller: ["Home", "My Products", "Orders", "Logout"],
-  buyer: ["Home", "Shop", "Cart", "My Orders", "Logout"],
+  seller: ["Home", "My Products", "Orders", "Chat", "Logout"],
+  buyer: ["Home", "Shop", "Cart", "My Orders", "Chat", "Logout"],
   guest: ["Home", "Login", "Register"]
 };
 
@@ -12,6 +12,7 @@ export const menuPaths = {
   Logout: "/logout",
   Shop: "/shop",
   Cart: "/cart",
+  Chat: "/chat",
   "My Orders": "/my-orders",
   "My Products": "/my-products",
   Orders: "/orders",

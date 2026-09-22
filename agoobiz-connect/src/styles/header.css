@@ -1,0 +1,259 @@
+/* ===================== */
+/* Header */
+/* ===================== */
+header {
+  background-color: #FFFFFF;
+  color: #1E1610;
+  padding: 0.8rem 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  box-shadow: 0 2px 10px rgba(30, 22, 16, 0.08);
+  border-bottom: 3px solid transparent;
+  border-image: linear-gradient(135deg, #E8632B, #F7A857);
+  border-image-slice: 1;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  position: relative;
+}
+
+/* Brand block (logo + name) */
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logo-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E8632B, #F7A857);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-name {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.brand-agoo {
+  color: #E8632B;
+}
+
+.brand-connect {
+  color: #1E1610;
+}
+
+.brand-location {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: #A9765A;
+  font-weight: 600;
+}
+
+/* Center nav */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.header-nav-link {
+  color: #4A3A2E;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 2px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.header-nav-link:hover {
+  color: #E8632B;
+}
+
+.header-nav-link.active {
+  color: #E8632B;
+  border-bottom-color: #E8632B;
+}
+
+/* Right side (register btn + hamburger + dropdown) */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.register-business-btn {
+  background: #1E1610;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 9px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.register-business-btn:hover {
+  background: #E8632B;
+}
+
+.menu-btn, .profile-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: #E8632B;
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+
+.menu-btn:hover, .profile-btn:hover {
+  color: #1E1610;
+}
+
+/* ===================== */
+/* Dropdown menu — anchored under the hamburger, right-aligned */
+/* ===================== */
+.dropdown-menu,
+.dropdown-profile {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(30, 22, 16, 0.18);
+  padding: 8px;
+  z-index: 1000;
+  min-width: 220px;
+  animation: fadeIn 0.25s ease-in-out;
+  border: 1px solid #FBCBA0;
+}
+
+.dropdown-menu::before,
+.dropdown-profile::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 14px;
+  width: 14px;
+  height: 14px;
+  background: #FFFFFF;
+  border-left: 1px solid #FBCBA0;
+  border-top: 1px solid #FBCBA0;
+  transform: rotate(45deg);
+}
+
+.dropdown-menu ul,
+.dropdown-profile ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-header {
+  padding: 10px 14px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #E8632B;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: #FBCBA0;
+  margin: 6px 4px;
+  border: none;
+}
+
+.dropdown-menu li,
+.dropdown-profile li {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dropdown-menu a,
+.dropdown-profile a,
+.dropdown-item-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  font-size: 15px;
+  color: #1E1610;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background 0.18s ease, padding-left 0.18s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.dropdown-menu a:hover,
+.dropdown-profile a:hover,
+.dropdown-item-btn:hover {
+  background-color: #FBCBA0;
+  padding-left: 18px;
+}
+
+.dropdown-icon {
+  font-size: 17px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.close-option,
+.dropdown-item-btn.danger {
+  color: #d9534f;
+}
+
+.dropdown-item-btn.danger:hover {
+  background-color: #fbe4e2;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .header-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  header { padding: 0.6rem 0.8rem; }
+  .brand-name { font-size: 15px; }
+  .register-business-btn { display: none; }
+}

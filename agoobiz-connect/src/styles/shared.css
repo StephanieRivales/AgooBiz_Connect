@@ -1,0 +1,26 @@
+/* ===================== */
+/* Shared across pages (Shop, Cart, Checkout, Orders) */
+/* ===================== */
+.shop-title {
+  color: #1E1610;
+  font-size: 1.8rem;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.empty-state {
+  text-align: center;
+  color: #A9765A;
+  margin: 40px 0;
+}
+
+.cart-browse-link {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  text-decoration: none;
+}
+
+.cart-total-amount {
+  color: #1E1610;
+}

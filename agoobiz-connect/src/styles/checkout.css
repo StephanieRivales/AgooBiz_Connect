@@ -1,0 +1,134 @@
+/* ===================== */
+/* Checkout */
+/* ===================== */
+.checkout-page {
+  padding: 40px 20px 100px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.checkout-form {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(30, 22, 16, 0.1);
+  padding: 28px;
+}
+
+.checkout-section-title {
+  color: #1E1610;
+  font-size: 1.05rem;
+  margin: 4px 0 4px;
+}
+
+.checkout-notes {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #F5D6AE;
+  border-radius: 16px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  resize: vertical;
+  color: #1E1610;
+  background: #FFF8F1;
+  box-sizing: border-box;
+}
+
+.checkout-notes:focus {
+  border-color: #E8632B;
+  box-shadow: 0 0 8px rgba(232, 99, 43, 0.3);
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 2px solid #F5D6AE;
+  border-radius: 14px;
+  background: #FFF8F1;
+  color: #1E1610;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.payment-option:hover {
+  border-color: #E8632B;
+}
+
+.payment-option.active {
+  border-color: #E8632B;
+  background: #FBCBA0;
+  font-weight: 600;
+}
+
+.payment-icon {
+  font-size: 18px;
+}
+
+.checkout-summary {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(30, 22, 16, 0.1);
+  padding: 24px;
+  position: sticky;
+  top: 90px;
+}
+
+.checkout-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 12px 0 16px;
+  font-size: 14px;
+  color: #1E1610;
+}
+
+.checkout-summary-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.checkout-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #A9765A;
+  padding: 6px 0;
+  border-top: 1px solid #FBCBA0;
+}
+
+.checkout-summary-total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1E1610;
+  border-top: 2px solid #FBCBA0;
+  margin-top: 6px;
+  padding-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+  .checkout-summary {
+    position: static;
+  }
+}

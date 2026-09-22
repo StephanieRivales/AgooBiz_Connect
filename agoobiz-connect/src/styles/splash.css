@@ -1,0 +1,64 @@
+/* ===================== */
+/* Splash / Intro page */
+/* ===================== */
+.splash-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #E8632B, #F7A857);
+  padding: 20px;
+}
+
+.splash-content {
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.splash-logo-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  box-shadow: 0 10px 40px rgba(30, 22, 16, 0.25);
+}
+
+.splash-logo-circle img {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+}
+
+.splash-title {
+  font-size: 2.4rem;
+  letter-spacing: 0.08em;
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+
+.splash-tagline {
+  font-size: 1.05rem;
+  opacity: 0.9;
+  margin: 0 0 32px;
+}
+
+.splash-cta {
+  background: #FFFFFF;
+  color: #E8632B;
+  border: none;
+  border-radius: 30px;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.splash-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(30, 22, 16, 0.2);
+}
