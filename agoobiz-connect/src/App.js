@@ -20,6 +20,7 @@ import Shop from './pages/Shop.jsx';
 import MyOrders from './pages/MyOrders.jsx';
 import Logout from './pages/Logout.jsx';
 import Chat from './pages/Chat.jsx';
+import Analytics from './pages/Analytics.jsx';
 
 import './App.css';
 
@@ -42,6 +43,11 @@ export default function App() {
             <Route path="/shop" element={<Shop />} />
             <Route path="/my-orders" element={<MyOrders />} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/analytics" element={
+              <ProtectedRoute>
+                <Analytics />
+              </ProtectedRoute>
+            } />
             <Route path="/chat" element={
               <ProtectedRoute>
                 <Chat />

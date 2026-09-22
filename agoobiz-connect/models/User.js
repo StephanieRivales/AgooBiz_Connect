@@ -16,6 +16,10 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false, // store a bcrypt hash here, never plain text
   },
+  barangay: {
+  type: DataTypes.STRING,
+  allowNull: true, // sellers can fill this in from their profile
+  },
   role: {
     type: DataTypes.ENUM("buyer", "seller", "admin"),
     allowNull: false,
