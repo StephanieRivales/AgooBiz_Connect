@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import api from "../api/api";
 
 const AuthContext = createContext(null);
 
@@ -8,46 +9,32 @@ export const AuthProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : null;
   });
 
-  const login = async (email, password, selectedRole) => {
-  let role = "buyer"; // default role for unlimited users
+  const login = async (email, password) => {
+    const res = await api.post("/auth/login", { email, password });
+    const { token, user: userData } = res.data.data;
 
-  if (email === "admin@123.com" && password === "admin123") {
-    role = "admin";
-  } else if (email.endsWith("@seller.com")) {
-    role = "seller";
-  }
-
-  // Validate the account's actual role matches the portal they picked
-  if (selectedRole && role !== selectedRole) {
-    throw new Error(
-      `This account is registered as a ${role}, not a ${selectedRole}. Please choose the correct portal.`
-    );
-  }
-
-  const userData = { email, role };
-  const token = "fake-jwt-token";
-
-  localStorage.setItem("user", JSON.stringify(userData));
-  localStorage.setItem("token", token);
-  setUser(userData);
-
-  return userData;
-};
-
-  const signup = async ({ name, email, password, role }) => {
-    // Prevent signup as admin unless explicitly allowed
-    if (role === "admin") {
-      throw new Error("Admin accounts cannot be created via signup.");
-    }
-
-    const newUser = { name, email, role };
-    const token = "fake-jwt-token";
-
-    localStorage.setItem("user", JSON.stringify(newUser));
     localStorage.setItem("token", token);
-    setUser(newUser);
+    localStorage.setItem("user", JSON.stringify(userData));
+    setUser(userData);
 
-    return newUser;
+    return userData;
+  };
+
+  const signup = async ({ name, email, password, role, barangay }) => {
+    const res = await api.post("/auth/register", {
+      name,
+      email,
+      password,
+      role,
+      barangay,
+    });
+    const { token, user: userData } = res.data.data;
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(userData));
+    setUser(userData);
+
+    return userData;
   };
 
   const logout = () => {

@@ -1,13 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../App.css";
 import { menus, menuPaths, menuIcons } from "../pages/menuConfig";
 import { useAuth } from "../context/AuthContext";
 
-const navLinks = [
+const guestNav = [
   { label: "Discover", path: "/shop" },
   { label: "Analytics", path: "/analytics" },
-  { label: "How It Works", path: "/how-it-works" },
+  { label: "How It Works", path: "/#how-it-works" },
+];
+
+const sellerNav = [
+  { label: "Dashboard", path: "/" },
+  { label: "My Products", path: "/my-products" },
+  { label: "Orders", path: "/orders" },
+  { label: "Analytics", path: "/analytics" },
+];
+
+const buyerNav = [
+  { label: "Discover", path: "/shop" },
+  { label: "My Orders", path: "/my-orders" },
+  { label: "Cart", path: "/cart" },
+];
+
+const adminNav = [
+  { label: "Dashboard", path: "/admin-dashboard" },
+  { label: "Users", path: "/admin/users" },
+  { label: "Analytics", path: "/analytics" },
 ];
 
 export default function Header() {
@@ -15,10 +34,27 @@ export default function Header() {
   const { user } = useAuth();
   const role = user?.role || "guest";
   const location = useLocation();
+  const menuRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const navLinks =
+    role === "seller" ? sellerNav :
+    role === "buyer"  ? buyerNav  :
+    role === "admin"  ? adminNav  : guestNav;
 
   return (
     <header className="header">
-      <Link to="/home" className="brand-block">
+      <Link to="/" className="brand-block">
         <div className="logo-circle">A</div>
         <div className="brand-text">
           <span className="brand-name">
@@ -41,15 +77,27 @@ export default function Header() {
         ))}
       </nav>
 
-      <div className="header-right">
+      <div className="header-right" ref={menuRef}>
         {role === "guest" && (
           <Link to="/register" className="register-business-btn">
             Register Business
           </Link>
         )}
 
-        <button className="menu-btn" onClick={() => setShowMenu(!showMenu)} aria-label="Menu">
-          <span className="menu-icon">☰</span>
+        {role !== "guest" && (
+          <span className="header-user-chip">
+            {role === "seller" ? "🍲" : role === "admin" ? "🛡️" : "🛒"}{" "}
+            {user?.name || user?.email?.split("@")[0] || role}
+          </span>
+        )}
+
+        <button
+          className="menu-btn"
+          onClick={() => setShowMenu(!showMenu)}
+          aria-label="Menu"
+          aria-expanded={showMenu}
+        >
+          <span className="menu-icon">{showMenu ? "✕" : "☰"}</span>
         </button>
 
         {showMenu && (
@@ -59,9 +107,12 @@ export default function Header() {
             </div>
             <hr className="dropdown-divider" />
             <ul>
-              {menus[role].map((item) => (
+              {(menus[role] || menus.guest).map((item) => (
                 <li key={item}>
-                  <Link to={menuPaths[item] || "/"} onClick={() => setShowMenu(false)}>
+                  <Link
+                    to={menuPaths[item] || "/"}
+                    onClick={() => setShowMenu(false)}
+                  >
                     <span className="dropdown-icon">{menuIcons[item] || "•"}</span>
                     {item}
                   </Link>

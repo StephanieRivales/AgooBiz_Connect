@@ -1,16 +1,12 @@
-// Small helpers so every route sends back consistent, friendly responses
-// instead of each file inventing its own error format.
+
 
 function ok(res, data, status = 200) {
-  return res.status(status).json(data);
+  return res.status(status).json({ success: true, data });
 }
 
-function fail(res, status, friendlyMessage, err = null) {
-  return res.status(status).json({
-    message: friendlyMessage,
-    // Only include raw error details in dev — hide internals from real users
-    ...(process.env.NODE_ENV !== "production" && err ? { error: err.message } : {}),
-  });
+function fail(res, status, message, err) {
+  if (err) console.error(err);
+  return res.status(status).json({ success: false, message });
 }
 
 module.exports = { ok, fail };

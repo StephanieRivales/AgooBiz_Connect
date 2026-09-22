@@ -240,6 +240,29 @@ header {
   background-color: #fbe4e2;
 }
 
+/* User chip when logged in */
+.header-user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FDEBD3;
+  color: #1E1610;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .header-user-chip {
+    display: none;
+  }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }

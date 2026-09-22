@@ -1,9 +1,23 @@
+/* ===================== */
+/* Footer — dark bar so light text is readable */
+/* ===================== */
+.site-footer {
+  background: #1E1610;
+  color: #FBCBA0;
+  padding: 48px 24px 24px;
+  margin-top: auto; /* pushes footer to bottom when page is short */
+}
+
+.footer-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 .footer-top {
   display: grid;
   grid-template-columns: 1.6fr 1fr 1fr;
   gap: 32px;
-  max-width: 1000px;
-  margin: 0 auto 24px;
+  margin-bottom: 28px;
   text-align: left;
 }
 
@@ -11,7 +25,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .footer-logo-circle {
@@ -25,6 +39,7 @@
   justify-content: center;
   font-weight: 700;
   font-size: 14px;
+  flex-shrink: 0;
 }
 
 .footer-brand-name {
@@ -33,12 +48,22 @@
   color: #FFFFFF;
 }
 
+.footer-tagline {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #FBCBA0;
+  opacity: 0.85;
+  max-width: 280px;
+}
+
 .footer-col h4 {
   color: #F7A857;
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin: 0 0 12px;
+  letter-spacing: 0.08em;
+  margin: 0 0 14px;
+  font-weight: 700;
 }
 
 .footer-col a,
@@ -46,13 +71,15 @@
   display: block;
   color: #FBCBA0;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 13.5px;
   margin: 0 0 10px;
-  opacity: 0.85;
+  opacity: 0.9;
+  line-height: 1.4;
 }
 
 .footer-col a:hover {
   opacity: 1;
+  color: #FFFFFF;
   text-decoration: underline;
 }
 
@@ -61,23 +88,33 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding-top: 16px;
+  padding-top: 20px;
   border-top: 1px solid rgba(251, 203, 160, 0.2);
-  font-size: 11px;
+  font-size: 12px;
   color: #FBCBA0;
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
 @media (max-width: 700px) {
+  .site-footer {
+    padding: 36px 20px 20px;
+  }
+
   .footer-top {
     grid-template-columns: 1fr;
+    gap: 28px;
     text-align: center;
   }
+
   .footer-brand-row {
     justify-content: center;
   }
+
+  .footer-tagline {
+    max-width: none;
+    margin: 0 auto;
+  }
+
   .footer-bottom {
     flex-direction: column;
     text-align: center;

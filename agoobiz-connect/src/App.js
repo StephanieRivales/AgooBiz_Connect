@@ -37,9 +37,6 @@ export default function App() {
             <Route path="/products" element={<ProductList />} />
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            <Route path="/seller-dashboard" element={<SellerDashboard />} />
-            <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/my-orders" element={<MyOrders />} />
             <Route path="/logout" element={<Logout />} />
@@ -71,6 +68,11 @@ export default function App() {
             <Route path="/seller-dashboard" element={
               <ProtectedRoute>
                 <SellerDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/buyer-dashboard" element={
+              <ProtectedRoute>
+                <BuyerDashboard />
               </ProtectedRoute>
             } />
           </Routes>

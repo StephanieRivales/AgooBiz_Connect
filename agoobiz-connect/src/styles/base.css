@@ -1,7 +1,22 @@
-/* Global reset + base typography */
+/* Global reset + base styles */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #FFF8F1;
   color: #1E1610;
+}
+
+/* Keep footer at the bottom */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+footer.site-footer {
+  margin-top: auto;
 }
