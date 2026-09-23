@@ -1,64 +1,82 @@
-/* ===================== */
-/* Splash / Intro page */
-/* ===================== */
-.splash-page {
-  min-height: 100vh;
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(160deg, #FFF3E6 0%, #FFD9B3 45%, #FF9F4D 100%);
+  /* shifted gradient to emphasize orange tones */
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #E8632B, #F7A857);
-  padding: 20px;
+  z-index: 9999;
+  animation: splashFadeIn 0.6s ease;
+}
+
+.splash-screen.splash-hide {
+  animation: splashFadeOut 0.6s ease forwards;
 }
 
 .splash-content {
-  text-align: center;
-  color: #FFFFFF;
-}
-
-.splash-logo-circle {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: #FFFFFF;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: 0 auto 24px;
-  box-shadow: 0 10px 40px rgba(30, 22, 16, 0.25);
+  text-align: center;
 }
 
-.splash-logo-circle img {
-  width: 130px;
-  height: 130px;
-  object-fit: contain;
+.splash-logo {
+  width: 110px;   
+  height: 110px; 
+  margin-bottom: 20px;
+  border-radius: 50%; 
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25); 
+  animation: splashPulse 2s ease-in-out infinite;
+}
+
+@keyframes splashPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
 }
 
 .splash-title {
-  font-size: 2.4rem;
-  letter-spacing: 0.08em;
-  margin: 0 0 10px;
+  font-size: 2rem; /* slightly larger to match bigger logo */
   font-weight: 700;
+  margin: 0;
+}
+
+.splash-agoo {
+  color: #E8632B;
+}
+
+.splash-connect {
+  color: #1E1610;
 }
 
 .splash-tagline {
-  font-size: 1.05rem;
-  opacity: 0.9;
-  margin: 0 0 32px;
+  color: #A9765A;
+  font-size: 1rem;
+  margin: 8px 0 30px;
 }
 
-.splash-cta {
-  background: #FFFFFF;
-  color: #E8632B;
-  border: none;
-  border-radius: 30px;
-  padding: 14px 32px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.splash-dots {
+  display: flex;
+  gap: 10px;
 }
 
-.splash-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(30, 22, 16, 0.2);
+.splash-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #E8632B;
+  animation: splashBounce 1.4s ease-in-out infinite;
+}
+
+.splash-dots span:nth-child(2) { animation-delay: 0.2s; }
+.splash-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes splashBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-8px); opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .splash-logo { width: 90px; height: 90px; }
+  .splash-title { font-size: 1.7rem; }
 }

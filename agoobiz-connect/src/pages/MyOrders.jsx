@@ -1,34 +1,57 @@
+import { useEffect, useState } from "react";
+import { ordersApi } from "../api/ordersApi";
 import "../App.css";
-
-// TODO: replace with real orders fetched from your backend for the logged-in buyer
-const sampleOrders = [
-  {
-    id: "ORD-1001",
-    date: "2026-08-05",
-    status: "Delivered",
-    total: 370,
-    items: [
-      { name: "Pancit Canton", quantity: 2 },
-      { name: "Bibingka", quantity: 1 },
-    ],
-  },
-  {
-    id: "ORD-1002",
-    date: "2026-08-08",
-    status: "Preparing",
-    total: 250,
-    items: [{ name: "Lechon Kawali", quantity: 1 }],
-  },
-];
 
 const statusColors = {
   Delivered: "status-delivered",
   Preparing: "status-preparing",
+  "Out for Delivery": "status-preparing",
   Cancelled: "status-cancelled",
 };
 
 export default function MyOrders() {
-  if (sampleOrders.length === 0) {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await ordersApi.getAll();
+        if (!cancelled) setOrders(data || []);
+      } catch (err) {
+        if (!cancelled) {
+          setError(
+            err.response?.data?.message || "We couldn't load your orders right now."
+          );
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="orders-page">
+        <h2 className="shop-title">My Orders</h2>
+        <p className="empty-state">Loading your orders...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="orders-page">
+        <h2 className="shop-title">My Orders</h2>
+        <p className="auth-error">{error}</p>
+      </section>
+    );
+  }
+
+  if (orders.length === 0) {
     return (
       <section className="orders-page">
         <h2 className="shop-title">My Orders</h2>
@@ -42,12 +65,16 @@ export default function MyOrders() {
       <h2 className="shop-title">My Orders</h2>
 
       <div className="order-list">
-        {sampleOrders.map((order) => (
+        {orders.map((order) => (
           <div className="order-card" key={order.id}>
             <div className="order-card-header">
               <div>
-                <h4>{order.id}</h4>
-                <p className="order-date">{order.date}</p>
+                <h4>Order #{order.id}</h4>
+                <p className="order-date">
+                  {new Date(order.createdAt).toLocaleDateString("en-PH", {
+                    year: "numeric", month: "short", day: "numeric",
+                  })}
+                </p>
               </div>
               <span className={`order-status ${statusColors[order.status] || ""}`}>
                 {order.status}
@@ -55,16 +82,16 @@ export default function MyOrders() {
             </div>
 
             <ul className="order-items-list">
-              {order.items.map((item, i) => (
-                <li key={i}>
-                  {item.quantity}x {item.name}
+              {(order.OrderItems || []).map((item) => (
+                <li key={item.id}>
+                  {item.quantity}x {item.Product?.name || "Item no longer available"}
                 </li>
               ))}
             </ul>
 
             <div className="order-card-footer">
               <span>Total</span>
-              <span className="cart-total-amount">₱{order.total.toFixed(2)}</span>
+              <span className="cart-total-amount">₱{Number(order.total).toFixed(2)}</span>
             </div>
           </div>
         ))}

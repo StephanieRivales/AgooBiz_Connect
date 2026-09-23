@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import {AuthProvider} from './context/AuthContext.jsx';
 import {CartProvider} from './context/CartContext.jsx';
@@ -24,10 +25,26 @@ import Chat from './pages/Chat.jsx';
 import Analytics from './pages/Analytics.jsx';
 import MyProducts from './pages/MyProducts.jsx';    
 import ScrollToHash from './components/ScrollToHash.jsx';
+import SplashScreen from './components/SplashScreen.jsx';
 
 import './App.css';
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    // Hide splash after 3 seconds (adjust as needed)
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return <SplashScreen />;
+  }
+
   return (
     <Router>
       <AuthProvider>

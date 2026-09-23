@@ -31,18 +31,13 @@ header {
   flex-shrink: 0;
 }
 
-.logo-circle {
+.logo-img {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #E8632B, #F7A857);
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 18px;
+  border: 2px solid #E8632B;
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .brand-text {

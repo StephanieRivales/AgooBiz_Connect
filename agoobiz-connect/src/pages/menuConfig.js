@@ -1,8 +1,8 @@
 export const menus = {
-  admin: ["Home", "Dashboard", "Users", "Settings", "Logout"],
-  seller: ["Home", "My Products", "Orders", "Chat", "Logout"],
-  buyer: ["Home", "Shop", "Cart", "My Orders", "Chat", "Logout"],
-  guest: ["Home", "Login", "Register"]
+  admin: ["Settings", "Logout"],
+  seller: ["Chat", "Logout"],
+  buyer: ["Chat", "Logout"],
+  guest: ["Login", "Register"]
 };
 
 export const menuPaths = {
@@ -28,6 +28,7 @@ export const menuIcons = {
   Logout: "🚪",
   Shop: "🛍️",
   Cart: "🛒",
+  Chat: "💬",
   "My Orders": "📦",
   "My Products": "🍲",
   Orders: "📋",

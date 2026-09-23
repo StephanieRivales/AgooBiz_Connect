@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../App.css";
+import logo from "../assets/logo.png";
 import { menus, menuPaths, menuIcons } from "../pages/menuConfig";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
@@ -16,11 +17,6 @@ const sellerNav = [
   { label: "My Products", path: "/my-products" },
   { label: "Orders", path: "/orders" },
   { label: "Analytics", path: "/analytics" },
-];
-
-const buyerNav = [
-  { label: "Discover", path: "/shop" },
-  { label: "My Orders", path: "/my-orders" },
 ];
 
 const adminNav = [
@@ -47,17 +43,23 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  const buyerNav = [
+    { label: "Discover", path: "/shop" },
+    { label: "My Orders", path: "/my-orders" },
+    { label: `Cart${cartCount > 0 ? ` (${cartCount})` : ""}`, path: "/cart" },
+  ];
+
   const navLinks =
     role === "seller" ? sellerNav :
     role === "buyer"  ? buyerNav  :
     role === "admin"  ? adminNav  : guestNav;
 
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
   return (
     <header className="header">
       <Link to="/" className="brand-block">
-        <div className="logo-circle">A</div>
+        <img src={logo} alt="AgooBiz Connect logo" className="logo-img" />
         <div className="brand-text">
           <span className="brand-name">
             <span className="brand-agoo">AgooBiz</span>{" "}
@@ -80,13 +82,6 @@ export default function Header() {
       </nav>
 
       <div className="header-right" ref={menuRef}>
-        {role === "buyer" && (
-          <Link to="/cart" className="cart-icon-link" aria-label="Cart">
-            🛒
-            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
-          </Link>
-        )}
-
         {role === "guest" && (
           <Link to="/register" className="register-business-btn">
             Register Business
@@ -95,7 +90,7 @@ export default function Header() {
 
         {role !== "guest" && (
           <span className="header-user-chip">
-            {role === "seller" ? "🍲" : role === "admin" ? "🛡️" : "🛒"}{" "}
+            {role === "seller" ? "🍲" : role === "admin" ? "🛡️" : "👤"}{" "}
             {user?.name || user?.email?.split("@")[0] || role}
           </span>
         )}

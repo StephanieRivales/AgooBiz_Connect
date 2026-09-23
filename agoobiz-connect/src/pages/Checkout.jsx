@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { ordersApi } from "../api/ordersApi";
 import "../App.css";
 
 const paymentMethods = [
@@ -30,36 +31,49 @@ export default function Checkout() {
   const deliveryFee = cart.length > 0 ? 50 : 0;
   const grandTotal = cartTotal + deliveryFee;
 
-  const handlePlaceOrder = async (e) => {
-    e.preventDefault();
-    setError("");
+const handlePlaceOrder = async (e) => {
+  e.preventDefault();
+  setError("");
 
-    if (!fullName || !phone || !address) {
-      setError("Please fill in your name, phone number, and delivery address.");
-      return;
-    }
-    if (!/^\d{7,15}$/.test(phone.replace(/[\s-]/g, ""))) {
-      setError("Please enter a valid phone number.");
-      return;
-    }
-    if (cart.length === 0) {
-      setError("Your cart is empty.");
-      return;
-    }
+  if (!fullName || !phone || !address) {
+    setError("Please fill in your name, phone number, and delivery address.");
+    return;
+  }
+  if (!/^\d{7,15}$/.test(phone.replace(/[\s-]/g, ""))) {
+    setError("Please enter a valid phone number.");
+    return;
+  }
+  if (cart.length === 0) {
+    setError("Your cart is empty.");
+    return;
+  }
 
-    setSubmitting(true);
-    try {
-      // TODO: replace with a real API call, e.g.
-      // await ordersApi.create({ items: cart, fullName, phone, address, notes, paymentMethod, total: grandTotal });
+  setSubmitting(true);
+  try {
+    await ordersApi.create({
+      items: cart.map(({ product, quantity }) => ({
+        productId: product.id,
+        quantity,
+      })),
+      fullName,
+      phone,
+      address,
+      notes,
+      paymentMethod,
+    });
 
-      cart.forEach((item) => removeFromCart(item.product));
-      navigate("/my-orders");
-    } catch (err) {
-      setError("We couldn't place your order. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+    cart.forEach((item) => removeFromCart(item.product));
+    navigate("/my-orders");
+  } catch (err) {
+    const msg =
+      err.response?.data?.message ||
+      err.message ||
+      "We couldn't place your order. Please try again.";
+    setError(msg);
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   if (cart.length === 0) {
     return (

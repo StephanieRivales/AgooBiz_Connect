@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 import Dropdown from "../components/Dropdown";
 import "../App.css";
 
@@ -12,6 +13,7 @@ const categoryPills = [
 
 export default function Home() {
   const { user } = useAuth();
+  const { cart } = useCart();
   const role = user?.role || "guest";
   const navigate = useNavigate();
 
@@ -123,6 +125,80 @@ export default function Home() {
       </section>
     );
   }
+
+if (role === "buyer") {
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartTotal = cart.reduce(
+    (sum, item) => sum + item.quantity * Number(item.product?.price ?? item.price ?? 0),
+    0
+  );
+
+  return (
+    <section className="seller-dashboard">
+      <div className="seller-dash-header">
+        <div>
+          <h1>Kumusta, {user?.name || "there"}!</h1>
+          <p className="seller-dash-sub">Ready to order for your next celebration?</p>
+        </div>
+        <a href="/shop" className="btn-primary">Browse Occasion Food</a>
+      </div>
+
+      <div className="stat-grid">
+        <div className="stat-card">
+          <span className="stat-icon">🛒</span>
+          <div>
+            <p className="stat-value">{cartCount}</p>
+            <p className="stat-label">Items in Cart</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <span className="stat-icon">₱</span>
+          <div>
+            <p className="stat-value">₱{cartTotal.toFixed(2)}</p>
+            <p className="stat-label">Cart Total</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <span className="stat-icon">📍</span>
+          <div>
+            <p className="stat-value">Agoo</p>
+            <p className="stat-label">La Union</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="seller-dash-grid">
+        <div className="dash-panel">
+          <div className="dash-panel-head">
+            <h2>Shop by Occasion</h2>
+          </div>
+          <div className="category-pill-row">
+            {categories.filter((c) => c !== "All").map((cat) => (
+              <button
+                key={cat}
+                className="category-pill"
+                onClick={() => navigate(`/shop?category=${encodeURIComponent(cat)}`)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="dash-panel">
+          <div className="dash-panel-head">
+            <h2>Quick Actions</h2>
+          </div>
+          <ul className="quick-action-list">
+            <li><a href="/shop">Discover Sellers</a></li>
+            <li><a href="/cart">View Cart{cartCount > 0 ? ` (${cartCount})` : ""}</a></li>
+            <li><a href="/my-orders">My Orders</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
 
   if (role === "admin") {
     return (

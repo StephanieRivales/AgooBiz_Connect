@@ -11,11 +11,9 @@ export default function Cart() {
     0
   );
 
-  const handleCheckout = () => {
-    // TODO: replace with real order submission (API call)
-    cart.forEach((item) => removeFromCart(item.product));
-    navigate("/my-orders");
-  };
+const handleCheckout = () => {
+  navigate("/checkout");
+};
 
   if (cart.length === 0) {
     return (

@@ -14,7 +14,7 @@ const announcementsRoutes = require("./routes/announcements");
 const reportsRoutes = require("./routes/reports");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+   const PORT = process.env.API_PORT || 5000;
 
 app.use(cors({ origin: true }));
 app.use(express.json());
