@@ -43,7 +43,7 @@ export default function Cart() {
             />
             <div className="cart-item-info">
               <h4>{product.name}</h4>
-              <p className="product-seller">by {product.seller}</p>
+              <p className="product-seller">by {product.sellerName || product.seller?.name || "Local Seller"}</p>
               <span className="product-price">₱{product.price}</span>
             </div>
 

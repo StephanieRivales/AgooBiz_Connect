@@ -49,6 +49,11 @@ router.get("/:id", async (req, res) => {
 // Sellers list a new dish here. Buyers and guests can't create products.
 router.post("/", authenticate, requireRole("seller"), async (req, res) => {
   try {
+    const seller = await User.findByPk(req.user.id);
+    if (!seller || seller.verificationStatus !== "approved") {
+      return fail(res, 403, "Your seller account is still pending verification. You can list products once it's approved.");
+    }
+
     const { name, description, price, category, image } = req.body;
 
     if (!name || !price || !category) {

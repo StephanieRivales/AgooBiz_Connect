@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuthPrompt } from "../context/AuthPromptContext";
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
+  const { requireAuth } = useAuthPrompt();
   if (!product) return null;
 
   const handleAdd = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product, 1);
+    requireAuth(() => addToCart(product, 1));
   };
 
   const img = product.image || product.imageUrl;

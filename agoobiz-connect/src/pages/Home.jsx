@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Dropdown from "../components/Dropdown";
 import "../App.css";
 
 const categoryPills = [
-  "Puto Bumbong", "Lechon Manok", "Ensaymada", "Barako Coffee",
-  "Lumpiang Sariwa", "Leche Flan", "Longganisa", "Sinigang",
-  "Chicharon", "Palitaw", "Kare-Kare", "Pandesal",
+  "Lechon", "Pancit Malabon", "Biko", "Embutido",
+  "Leche Flan", "Buko Salad", "Caldereta", "Menudo",
+  "Kutsinta", "Sapin-Sapin", "Fruit Salad", "Spaghetti",
 ];
 
 export default function Home() {
@@ -17,7 +18,10 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("All");
 
-  const categories = ["All", "Kakanin", "Ulam", "Pastries", "Beverages", "Snacks", "Frozen"];
+  const categories = [
+  "All", "Birthday", "Fiesta", "Wedding",
+  "Christmas / Noche Buena", "Baptismal", "Graduation", "Wake / Lamay",
+];
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -141,13 +145,13 @@ export default function Home() {
       </span>
 
       <h1 className="hero-heading">
-        Your neighborhood <span className="hero-accent">food market</span>, online.
+        Fiesta-ready <span className="hero-accent">occasion food</span>, from Agoo's home kitchens.
       </h1>
 
       <p className="hero-subtext">
-        Discover verified home-based food businesses across Agoo's barangays —
-        ranked by proximity and what matters to you. Preorder fresh kakanin,
-        ulam, pastries, and more.
+        Preorder lechon, pancit, kakanin, and party trays from verified home-based
+        cooks across Agoo's barangays — made for birthdays, fiestas, weddings,
+        and every celebration in between.
       </p>
 
       <div className="category-pill-row">
@@ -160,19 +164,16 @@ export default function Home() {
 
       <form className="search-filter-container hero-search" onSubmit={handleSearch}>
         <div className="search-bar">
+          <span className="search-icon">🔍</span>
           <input
             type="text"
-            placeholder="Search for pancit, kakanin, lechon..."
+            placeholder="Search for lechon, pancit, kakanin..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="category-filter">
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
+          <Dropdown options={categories} value={category} onChange={setCategory} />
         </div>
         <button type="submit" className="hero-search-btn">Browse Sellers →</button>
       </form>
@@ -189,6 +190,26 @@ export default function Home() {
         <div className="hero-stat">
           <strong>8K+</strong>
           <span>Orders/month</span>
+        </div>
+      </div>
+      <div id="how-it-works" className="how-it-works-section">
+        <h2 className="how-it-works-title">How AgooBiz Connect works</h2>
+        <div className="how-it-works-grid">
+          <div className="how-it-works-step">
+            <span className="how-it-works-number">1</span>
+            <h4>Browse by occasion</h4>
+            <p>Search or filter sellers by what you're celebrating — birthday, fiesta, wedding, and more.</p>
+          </div>
+          <div className="how-it-works-step">
+            <span className="how-it-works-number">2</span>
+            <h4>Preorder from home cooks</h4>
+            <p>Message the seller, confirm quantity and pickup or delivery details, then place your order.</p>
+          </div>
+          <div className="how-it-works-step">
+            <span className="how-it-works-number">3</span>
+            <h4>Pick up or get delivered</h4>
+            <p>Your order is prepared fresh and ready by the date you need it for your event.</p>
+          </div>
         </div>
       </div>
     </section>

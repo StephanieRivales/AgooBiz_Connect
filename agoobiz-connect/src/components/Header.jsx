@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import "../App.css";
 import { menus, menuPaths, menuIcons } from "../pages/menuConfig";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 
 const guestNav = [
   { label: "Discover", path: "/shop" },
@@ -20,7 +21,6 @@ const sellerNav = [
 const buyerNav = [
   { label: "Discover", path: "/shop" },
   { label: "My Orders", path: "/my-orders" },
-  { label: "Cart", path: "/cart" },
 ];
 
 const adminNav = [
@@ -32,11 +32,11 @@ const adminNav = [
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { user } = useAuth();
+  const { cart } = useCart();
   const role = user?.role || "guest";
   const location = useLocation();
   const menuRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -51,6 +51,8 @@ export default function Header() {
     role === "seller" ? sellerNav :
     role === "buyer"  ? buyerNav  :
     role === "admin"  ? adminNav  : guestNav;
+
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <header className="header">
@@ -78,6 +80,13 @@ export default function Header() {
       </nav>
 
       <div className="header-right" ref={menuRef}>
+        {role === "buyer" && (
+          <Link to="/cart" className="cart-icon-link" aria-label="Cart">
+            🛒
+            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+          </Link>
+        )}
+
         {role === "guest" && (
           <Link to="/register" className="register-business-btn">
             Register Business

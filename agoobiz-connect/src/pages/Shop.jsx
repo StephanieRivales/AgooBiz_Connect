@@ -5,65 +5,18 @@ import "../App.css";
 import "../styles/shop.css";
 
 const categories = [
-  "All",
-  "Kakanin",
-  "Ulam",
-  "Pastries",
-  "Beverages",
-  "Snacks",
-  "Frozen",
+  "All", "Birthday", "Fiesta", "Wedding",
+  "Christmas / Noche Buena", "Baptismal", "Graduation", "Wake / Lamay",
 ];
 
 // Demo products for design (replace with API later)
 const DEMO_PRODUCTS = [
-  {
-    id: 1,
-    name: "Special Puto Bumbong",
-    price: 120,
-    category: "Kakanin",
-    image: "",
-    seller: { name: "Aling Nena's Kitchen" },
-  },
-  {
-    id: 2,
-    name: "Lechon Manok (Half)",
-    price: 280,
-    category: "Ulam",
-    image: "",
-    seller: { name: "Don Yeahh Foods" },
-  },
-  {
-    id: 3,
-    name: "Ensaymada Box of 6",
-    price: 150,
-    category: "Pastries",
-    image: "",
-    seller: { name: "Macalva Bakes" },
-  },
-  {
-    id: 4,
-    name: "Barako Brew (1L)",
-    price: 90,
-    category: "Beverages",
-    image: "",
-    seller: { name: "Agoo Coffee Co." },
-  },
-  {
-    id: 5,
-    name: "Lumpiang Sariwa (4pcs)",
-    price: 100,
-    category: "Snacks",
-    image: "",
-    seller: { name: "Tita Rosa" },
-  },
-  {
-    id: 6,
-    name: "Leche Flan Tray",
-    price: 200,
-    category: "Pastries",
-    image: "",
-    seller: { name: "Sweet Agoo" },
-  },
+  { id: 1, name: "Lechon (Whole, Small)", price: 3500, category: "Fiesta", image: "", seller: { name: "Aling Nena's Kitchen" } },
+  { id: 2, name: "Pancit Malabon Tray", price: 850, category: "Birthday", image: "", seller: { name: "Don Yeahh Foods" } },
+  { id: 3, name: "Biko Tray", price: 450, category: "Fiesta", image: "", seller: { name: "Macalva Bakes" } },
+  { id: 4, name: "Embutido (Log, 6pcs)", price: 600, category: "Christmas / Noche Buena", image: "", seller: { name: "Agoo Coffee Co." } },
+  { id: 5, name: "Leche Flan Tray", price: 350, category: "Wedding", image: "", seller: { name: "Sweet Agoo" } },
+  { id: 6, name: "Buko Salad (Big)", price: 500, category: "Baptismal", image: "", seller: { name: "Tita Rosa" } },
 ];
 
 export default function Shop() {
@@ -89,7 +42,7 @@ export default function Shop() {
     <section className="shop-page">
       <div className="shop-header">
         <div>
-          <h1 className="shop-title">Browse local food</h1>
+          <h1 className="shop-title">Browse occasion food</h1>
           <p className="shop-subtitle">Home-based kitchens across Agoo, La Union</p>
         </div>
       </div>
@@ -98,7 +51,7 @@ export default function Shop() {
         <input
           className="shop-search-input"
           type="text"
-          placeholder="Search puto, lechon, ensaymada..."
+          placeholder="Search lechon, pancit malabon, biko..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

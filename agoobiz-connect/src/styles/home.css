@@ -88,6 +88,7 @@
   cursor: pointer;
   white-space: nowrap;
   transition: filter 0.2s ease;
+  margin-left: 4px;
 }
 
 .hero-search-btn:hover {
@@ -118,18 +119,215 @@
   letter-spacing: 0.05em;
 }
 
+.search-filter-container {
+  display: flex;
+  align-items: stretch;
+  max-width: 640px;
+  margin: 0 auto 40px;
+  background: #FFFFFF;
+  border: 1px solid #F0DFC8;
+  border-radius: 50px;
+  box-shadow: 0 8px 24px rgba(232, 99, 43, 0.1);
+  padding: 6px;
+}
+
+.search-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+  min-width: 0;
+}
+
+.search-icon {
+  font-size: 14px;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.search-bar input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: #1E1610;
+  padding: 12px 0;
+}
+
+.search-bar input::placeholder {
+  color: #C4A587;
+}
+
+.category-filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-left: 1px solid #F0DFC8;
+  padding: 0 6px 0 14px;
+}
+
+.occasion-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4A3A2E;
+  padding: 12px 10px 12px 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.occasion-dropdown-trigger:hover {
+  color: #E8632B;
+}
+
+.occasion-dropdown-caret {
+  font-size: 10px;
+  color: #C4A587;
+  transition: transform 0.2s ease;
+}
+
+.occasion-dropdown-caret-open {
+  transform: rotate(180deg);
+  color: #E8632B;
+}
+
+.occasion-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #FFFFFF;
+  border: 1px solid #F0DFC8;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(30, 22, 16, 0.14);
+  padding: 6px;
+  min-width: 200px;
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 20;
+  list-style: none;
+  margin: 0;
+}
+
+.occasion-dropdown-item {
+  padding: 10px 14px;
+  font-size: 13.5px;
+  color: #4A3A2E;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.occasion-dropdown-item:hover {
+  background: #FDEBD3;
+}
+
+.occasion-dropdown-item-active {
+  background: #FBCBA0;
+  color: #C9722A;
+  font-weight: 700;
+}
+
 @media (max-width: 600px) {
   .hero-heading {
     font-size: 1.9rem;
   }
-  .hero-search {
+  .hero-stats {
+    gap: 28px;
+  }
+  .search-filter-container {
     flex-direction: column;
+    border-radius: 20px;
+    padding: 10px;
+    gap: 4px;
+  }
+  .category-filter {
+    border-left: none;
+    border-top: 1px solid #F0DFC8;
+    padding: 8px 4px 4px;
+  }
+  .occasion-dropdown-trigger {
+    width: 100%;
+    justify-content: space-between;
+    padding: 8px 4px;
+  }
+  .occasion-dropdown-menu {
+    left: 0;
+    transform: none;
+    width: 100%;
   }
   .hero-search-btn {
     width: 100%;
+    margin-left: 0;
+    margin-top: 4px;
     padding: 13px;
   }
-  .hero-stats {
-    gap: 28px;
+}
+
+.how-it-works-section {
+  max-width: 900px;
+  margin: 20px auto 0;
+  padding-top: 20px;
+  scroll-margin-top: 100px;
+}
+
+.how-it-works-title {
+  font-size: 1.6rem;
+  color: #1E1610;
+  margin: 0 0 28px;
+}
+
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.how-it-works-step {
+  background: #FFFFFF;
+  border: 1px solid #F5D6AE;
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: left;
+}
+
+.how-it-works-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E8632B, #F7A857);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.how-it-works-step h4 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  color: #1E1610;
+}
+
+.how-it-works-step p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #4A3A2E;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .how-it-works-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -1,0 +1,89 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 22, 16, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 36px 32px 28px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(30, 22, 16, 0.25);
+  animation: modalPop 0.2s ease;
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.94); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #A9765A;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.modal-close:hover {
+  background: #FDEBD3;
+  color: #E8632B;
+}
+
+.modal-icon {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.modal-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+  color: #1E1610;
+}
+
+.modal-card p {
+  margin: 0 0 24px;
+  color: #4A3A2E;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-secondary-btn {
+  background: #FFFFFF;
+  border: 2px solid #F5D6AE;
+  color: #4A3A2E;
+  padding: 12px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-secondary-btn:hover {
+  background: #FDEBD3;
+  border-color: #E8632B;
+  color: #E8632B;
+}

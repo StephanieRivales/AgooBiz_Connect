@@ -1,8 +1,8 @@
 import { useParams, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuthPrompt } from "../context/AuthPromptContext";
 import "../App.css";
 
-// Placeholder until you fetch from the API
 const mockProduct = {
   id: 1,
   name: "Home-cooked Adobo",
@@ -18,12 +18,12 @@ const mockProduct = {
 export default function ProductDetail() {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const { requireAuth } = useAuthPrompt();
 
-  // TODO: replace with real API call using `id`
   const product = { ...mockProduct, id: Number(id) || mockProduct.id };
 
   const handleAddToCart = () => {
-    addToCart(product, 1);
+    requireAuth(() => addToCart(product, 1));
   };
 
   return (

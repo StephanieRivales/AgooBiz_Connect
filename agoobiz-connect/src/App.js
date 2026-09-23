@@ -1,6 +1,7 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import {AuthProvider} from './context/AuthContext.jsx';
 import {CartProvider} from './context/CartContext.jsx';
+import {AuthPromptProvider} from './context/AuthPromptContext.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 import Header from './components/Header.jsx';
@@ -22,6 +23,7 @@ import Logout from './pages/Logout.jsx';
 import Chat from './pages/Chat.jsx';
 import Analytics from './pages/Analytics.jsx';
 import MyProducts from './pages/MyProducts.jsx';    
+import ScrollToHash from './components/ScrollToHash.jsx';
 
 import './App.css';
 
@@ -30,6 +32,8 @@ export default function App() {
     <Router>
       <AuthProvider>
         <CartProvider>
+          <AuthPromptProvider>
+            <ScrollToHash />
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -41,11 +45,7 @@ export default function App() {
             <Route path="/shop" element={<Shop />} />
             <Route path="/my-orders" element={<MyOrders />} />
             <Route path="/logout" element={<Logout />} />
-            <Route path="/analytics" element={
-              <ProtectedRoute>
-                <Analytics />
-              </ProtectedRoute>
-            } />
+            <Route path="/analytics" element={<Analytics />} />
             <Route path="/chat" element={
               <ProtectedRoute>
                 <Chat />
@@ -88,6 +88,8 @@ export default function App() {
             } />
           </Routes>
           <Footer />
+          <ScrollToHash />
+          </AuthPromptProvider>
         </CartProvider>
       </AuthProvider>
     </Router>
