@@ -42,7 +42,7 @@ export default function App() {
   }, []);
 
   if (showSplash) {
-    return <SplashScreen />;
+  return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
 
   return (

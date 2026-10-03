@@ -29,7 +29,7 @@ export default function Footer() {
             <h4>Contact</h4>
             <p>Agoo Public Market, La Union</p>
             <p>agoobiz@connect.ph</p>
-            <p>+63 912 345 6789</p>
+            <p>+63 9** *** ****</p>
           </div>
         </div>
 

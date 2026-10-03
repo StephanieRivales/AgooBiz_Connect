@@ -2,6 +2,20 @@ import { useState, useEffect } from "react";
 import { reportsApi } from "../api/reportsApi";
 import "../App.css";
 
+function unwrap(data) {
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.data)) return data.data;
+  return [];
+}
+
+function unwrapObject(data) {
+  if (!data || typeof data !== "object" || Array.isArray(data)) return null;
+  if (data.data && typeof data.data === "object" && !Array.isArray(data.data)) {
+    return data.data;
+  }
+  return data;
+}
+
 export default function Analytics() {
   const [summary, setSummary] = useState(null);
   const [trend, setTrend] = useState([]);
@@ -14,24 +28,32 @@ export default function Analytics() {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [summaryData, trendData, categoryData, sellerData, barangayData] = await Promise.all([
-          reportsApi.getPublicSummary(),
-          reportsApi.getWeeklyTrend(),
-          reportsApi.getCategoryDemand(),
-          reportsApi.getTopSellers(),
-          reportsApi.getBarangayDemand(),
-        ]);
-        setSummary(summaryData);
-        setTrend(trendData);
-        setCategories(categoryData);
-        setTopSellers(sellerData);
-        setBarangays(barangayData);
+        const [summaryData, trendData, categoryData, sellerData, barangayData] =
+          await Promise.all([
+            reportsApi.getPublicSummary(),
+            reportsApi.getWeeklyTrend(),
+            reportsApi.getCategoryDemand(),
+            reportsApi.getTopSellers(),
+            reportsApi.getBarangayDemand(),
+          ]);
+
+        setSummary(unwrapObject(summaryData));
+        setTrend(unwrap(trendData));
+        setCategories(unwrap(categoryData));
+        setTopSellers(unwrap(sellerData));
+        setBarangays(unwrap(barangayData));
       } catch (err) {
         setError("We couldn't load the analytics right now. Please try again.");
+        setTrend([]);
+        setCategories([]);
+        setTopSellers([]);
+        setBarangays([]);
+        setSummary(null);
       } finally {
         setLoading(false);
       }
     };
+
     fetchAll();
   }, []);
 
@@ -51,8 +73,19 @@ export default function Analytics() {
     );
   }
 
-  const maxOrders = Math.max(...trend.map((t) => t.orderCount), 1);
-  const maxCategoryOrders = Math.max(...categories.map((c) => c.orders), 1);
+  const trendList = Array.isArray(trend) ? trend : [];
+  const categoryList = Array.isArray(categories) ? categories : [];
+  const sellerList = Array.isArray(topSellers) ? topSellers : [];
+  const barangayList = Array.isArray(barangays) ? barangays : [];
+
+  const maxOrders = Math.max(
+    ...trendList.map((t) => Number(t.orderCount) || 0),
+    1
+  );
+  const maxCategoryOrders = Math.max(
+    ...categoryList.map((c) => Number(c.orders) || 0),
+    1
+  );
 
   return (
     <section className="analytics-page">
@@ -61,75 +94,96 @@ export default function Analytics() {
         <h1>
           What Agoo is <span className="hero-accent">craving</span> this week
         </h1>
-        {summary && (
+        {summary?.updatedAt && (
           <span className="analytics-updated">
-            Updated: {new Date(summary.updatedAt).toLocaleDateString("en-PH", {
-              year: "numeric", month: "short", day: "numeric",
+            Updated:{" "}
+            {new Date(summary.updatedAt).toLocaleDateString("en-PH", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
             })}
           </span>
         )}
       </div>
 
       <div className="analytics-grid">
-        {/* Trend chart panel */}
         <div className="analytics-panel analytics-panel-dark">
           <h3>Total Orders — Past 7 Days</h3>
 
-          <div className="trend-chart">
-            {trend.map((day) => (
-              <div className="trend-bar-col" key={day.date}>
-                <span className="trend-value">{day.orderCount}</span>
-                <div
-                  className="trend-bar"
-                  style={{ height: `${(day.orderCount / maxOrders) * 100}%` }}
-                />
-                <span className="trend-day">{day.dayLabel}</span>
-              </div>
-            ))}
-          </div>
+          {trendList.length === 0 ? (
+            <p className="empty-state chat-empty-small">No order data yet.</p>
+          ) : (
+            <div className="trend-chart">
+              {trendList.map((day) => (
+                <div className="trend-bar-col" key={day.date || day.dayLabel}>
+                  <span className="trend-value">{day.orderCount ?? 0}</span>
+                  <div
+                    className="trend-bar"
+                    style={{
+                      height: `${((Number(day.orderCount) || 0) / maxOrders) * 100}%`,
+                    }}
+                  />
+                  <span className="trend-day">{day.dayLabel || day.date}</span>
+                </div>
+              ))}
+            </div>
+          )}
 
           {summary && (
             <div className="analytics-stat-row">
               <div>
-                <strong>{summary.ordersThisWeek}</strong>
-                <span>Today</span>
+                <strong>{summary.ordersThisWeek ?? 0}</strong>
+                <span>This week</span>
               </div>
               <div>
-                <strong className={summary.wowGrowth >= 0 ? "positive" : "negative"}>
-                  {summary.wowGrowth >= 0 ? "+" : ""}{summary.wowGrowth}%
+                <strong
+                  className={
+                    (summary.wowGrowth ?? 0) >= 0 ? "positive" : "negative"
+                  }
+                >
+                  {(summary.wowGrowth ?? 0) >= 0 ? "+" : ""}
+                  {summary.wowGrowth ?? 0}%
                 </strong>
                 <span>WoW Growth</span>
               </div>
               <div>
-                <strong>{summary.activeSellers}</strong>
+                <strong>{summary.activeSellers ?? 0}</strong>
                 <span>Active Sellers</span>
               </div>
             </div>
           )}
         </div>
 
-        {/* Category demand panel */}
         <div className="analytics-panel">
           <h3>Category Demand</h3>
-          {categories.length === 0 ? (
-            <p className="empty-state chat-empty-small">No orders yet this week.</p>
+          {categoryList.length === 0 ? (
+            <p className="empty-state chat-empty-small">
+              No orders yet this week.
+            </p>
           ) : (
             <div className="category-demand-list">
-              {categories.map((cat) => (
+              {categoryList.map((cat) => (
                 <div className="category-demand-row" key={cat.category}>
                   <div className="category-demand-top">
                     <span>{cat.category}</span>
                     <span>
-                      <span className={cat.growthPct >= 0 ? "positive" : "negative"}>
-                        {cat.growthPct >= 0 ? "+" : ""}{cat.growthPct}%
+                      <span
+                        className={
+                          (cat.growthPct ?? 0) >= 0 ? "positive" : "negative"
+                        }
+                      >
+                        {(cat.growthPct ?? 0) >= 0 ? "+" : ""}
+                        {cat.growthPct ?? 0}%
                       </span>{" "}
-                      {cat.orders}
+                      {cat.orders ?? 0}
                     </span>
                   </div>
                   <div className="category-demand-bar-track">
                     <div
                       className="category-demand-bar-fill"
-                      style={{ width: `${(cat.orders / maxCategoryOrders) * 100}%` }}
+                      style={{
+                        width: `${((Number(cat.orders) || 0) / maxCategoryOrders) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -139,30 +193,35 @@ export default function Analytics() {
         </div>
       </div>
 
-      {/* Top sellers */}
       <h3 className="analytics-section-title">Top Sellers This Week</h3>
-      {topSellers.length === 0 ? (
-        <p className="empty-state chat-empty-small">No seller activity yet this week.</p>
+      {sellerList.length === 0 ? (
+        <p className="empty-state chat-empty-small">
+          No seller activity yet this week.
+        </p>
       ) : (
         <div className="top-sellers-grid">
-          {topSellers.map((seller) => (
-            <div className="top-seller-card" key={seller.sellerId}>
+          {sellerList.map((seller) => (
+            <div
+              className="top-seller-card"
+              key={seller.sellerId || seller.name}
+            >
               <span className="top-seller-name">{seller.name}</span>
-              <span className="top-seller-orders">{seller.orders} orders (7d)</span>
+              <span className="top-seller-orders">
+                {seller.orders ?? 0} orders (7d)
+              </span>
             </div>
           ))}
         </div>
       )}
 
-      {/* Demand by barangay */}
-      <h3 className="analytics-section-title">Demand by Barangay — Today</h3>
-      {barangays.length === 0 ? (
-        <p className="empty-state chat-empty-small">No orders placed yet today.</p>
+      <h3 className="analytics-section-title">Demand by Barangay</h3>
+      {barangayList.length === 0 ? (
+        <p className="empty-state chat-empty-small">No orders placed yet.</p>
       ) : (
         <div className="barangay-grid">
-          {barangays.map((b) => (
+          {barangayList.map((b) => (
             <div className="barangay-card" key={b.barangay}>
-              <strong>{b.orders}</strong>
+              <strong>{b.orders ?? 0}</strong>
               <span>{b.barangay}</span>
             </div>
           ))}
