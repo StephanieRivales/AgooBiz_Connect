@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import { productsApi } from "../api/productsApi";
 import "../App.css";
 import "../styles/shop.css";
 
@@ -9,34 +10,54 @@ const categories = [
   "Christmas / Noche Buena", "Baptismal", "Graduation", "Wake / Lamay",
 ];
 
-// Demo products for design (replace with API later)
-const DEMO_PRODUCTS = [
-  { id: 1, name: "Lechon (Whole, Small)", price: 3500, category: "Fiesta", image: "", seller: { name: "Aling Nena's Kitchen" } },
-  { id: 2, name: "Pancit Malabon Tray", price: 850, category: "Birthday", image: "", seller: { name: "Don Yeahh Foods" } },
-  { id: 3, name: "Biko Tray", price: 450, category: "Fiesta", image: "", seller: { name: "Macalva Bakes" } },
-  { id: 4, name: "Embutido (Log, 6pcs)", price: 600, category: "Christmas / Noche Buena", image: "", seller: { name: "Agoo Coffee Co." } },
-  { id: 5, name: "Leche Flan Tray", price: 350, category: "Wedding", image: "", seller: { name: "Sweet Agoo" } },
-  { id: 6, name: "Buko Salad (Big)", price: 500, category: "Baptismal", image: "", seller: { name: "Tita Rosa" } },
-];
-
 export default function Shop() {
   const [searchParams] = useSearchParams();
-  const [products] = useState(DEMO_PRODUCTS);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "All");
+  const [location, setLocation] = useState(null);
+  const [locating, setLocating] = useState(false);
 
-  const filtered = useMemo(() => {
-    return products.filter((p) => {
-      const seller = p.seller?.name || "";
-      const q = searchTerm.toLowerCase();
-      const matchSearch =
-        !q ||
-        p.name.toLowerCase().includes(q) ||
-        seller.toLowerCase().includes(q);
-      const matchCat = category === "All" || p.category === category;
-      return matchSearch && matchCat;
-    });
-  }, [products, searchTerm, category]);
+  const handleUseLocation = () => {
+    if (!navigator.geolocation) return;
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setLocating(false);
+      },
+      () => setLocating(false),
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError("");
+
+    const timer = setTimeout(async () => {
+      try {
+        const data = await productsApi.getAll({
+          search: searchTerm || undefined,
+          category: category !== "All" ? category : undefined,
+          buyerLat: location?.lat,
+          buyerLng: location?.lng,
+        });
+        if (!cancelled) setProducts(data || []);
+      } catch (err) {
+        if (!cancelled) {
+          setError(err.response?.data?.message || "We couldn't load products right now.");
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }, 300);
+
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [searchTerm, category, location]);
 
   return (
     <section className="shop-page">
@@ -45,6 +66,9 @@ export default function Shop() {
           <h1 className="shop-title">Browse occasion food</h1>
           <p className="shop-subtitle">Home-based kitchens across Agoo, La Union</p>
         </div>
+        <button type="button" className="shop-location-btn" onClick={handleUseLocation} disabled={locating}>
+          {locating ? "Locating..." : location ? "📍 Sorted near you" : "📍 Sort by nearest"}
+        </button>
       </div>
 
       <div className="shop-toolbar">
@@ -69,19 +93,27 @@ export default function Shop() {
         </div>
       </div>
 
-      <p className="shop-count">{filtered.length} product{filtered.length !== 1 ? "s" : ""}</p>
-
-      {filtered.length === 0 ? (
-        <div className="shop-empty">
-          <span className="shop-empty-icon">🍽️</span>
-          <p>No products match your search.</p>
-        </div>
+      {loading ? (
+        <p className="shop-count">Loading products...</p>
+      ) : error ? (
+        <p className="auth-error">{error}</p>
       ) : (
-        <div className="product-grid">
-          {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        <>
+          <p className="shop-count">{products.length} product{products.length !== 1 ? "s" : ""}</p>
+
+          {products.length === 0 ? (
+            <div className="shop-empty">
+              <span className="shop-empty-icon">🍽️</span>
+              <p>No products match your search.</p>
+            </div>
+          ) : (
+            <div className="product-grid">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </section>
   );

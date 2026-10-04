@@ -6,6 +6,8 @@ const OrderItem = require("./OrderItem");
 const Review = require("./Review");
 const Announcement = require("./Announcement");
 const Message = require("./Message");
+const ProductView = require("./ProductView");
+const SearchQuery = require("./SearchQuery");
 
 // --- User <-> Product (a seller owns many products) ---
 User.hasMany(Product, { foreignKey: "sellerId", as: "products" });
@@ -41,6 +43,16 @@ User.hasMany(Message, { foreignKey: "receiverId", as: "receivedMessages" });
 Message.belongsTo(User, { foreignKey: "senderId", as: "sender" });
 Message.belongsTo(User, { foreignKey: "receiverId", as: "receiver" });
 
+// --- Product <-> ProductView ---
+Product.hasMany(ProductView, { foreignKey: "productId" });
+ProductView.belongsTo(Product, { foreignKey: "productId" });
+User.hasMany(ProductView, { foreignKey: "userId" });
+ProductView.belongsTo(User, { foreignKey: "userId" });
+
+// --- User <-> SearchQuery ---
+User.hasMany(SearchQuery, { foreignKey: "userId" });
+SearchQuery.belongsTo(User, { foreignKey: "userId" });
+
 module.exports = {
   sequelize,
   User,
@@ -50,4 +62,6 @@ module.exports = {
   Review,
   Announcement,
   Message,
+  ProductView,
+  SearchQuery,
 };

@@ -299,3 +299,25 @@
     height: 220px;
   }
 }
+
+.shop-location-btn {
+  background: #FFF8F1;
+  border: 2px solid #F5D6AE;
+  color: #1E1610;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.shop-location-btn:hover:not(:disabled) {
+  background: #FBCBA0;
+  border-color: #E8632B;
+}
+
+.shop-location-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

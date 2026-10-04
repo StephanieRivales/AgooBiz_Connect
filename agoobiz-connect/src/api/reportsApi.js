@@ -6,4 +6,6 @@ export const reportsApi = {
   getCategoryDemand: async () => (await api.get("/reports/category-demand")).data.data,
   getTopSellers: async () => (await api.get("/reports/top-sellers")).data.data,
   getBarangayDemand: async () => (await api.get("/reports/barangay-demand")).data.data,
+  getTopProducts: async () => (await api.get("/reports/top-products")).data.data,
+  getTrendingSearches: async () => (await api.get("/reports/trending-searches")).data.data,
 };

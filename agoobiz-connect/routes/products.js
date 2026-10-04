@@ -1,36 +1,69 @@
 // Everything related to browsing and managing the food listings sellers put up.
 const express = require("express");
 const router = express.Router();
-const { Op } = require("sequelize");
-const { Product, User } = require("../models");
+const { Product, User, SearchQuery, ProductView } = require("../models");
 const authenticate = require("../middleware/auth");
+const optionalAuth = require("../middleware/optionalAuth");
 const requireRole = require("../middleware/requireRole");
 const { ok, fail } = require("../lib/responses");
-
+const { scoreProduct } = require("../lib/relevance");
 
 // Anyone can browse products — no login needed.
-// Supports ?category=Pancit and ?search=lechon to help narrow things down.
-router.get("/", async (req, res) => {
+// Supports ?category=Pancit, ?search=lechon, and optional ?buyerLat=&buyerLng=
+// to rank results by relevance (keyword match + category + proximity).
+router.get("/", optionalAuth, async (req, res) => {
   try {
-    const { category, search } = req.query;
+    const { category, search, sellerId, buyerLat, buyerLng } = req.query;
     const where = {};
 
     if (category && category !== "All") where.category = category;
-    if (search) where.name = { [Op.iLike]: `%${search}%` };
+    if (sellerId) where.sellerId = sellerId;
+    // Note: search is no longer a hard SQL filter — it's scored below so
+    // near-matches can still surface, just ranked lower than exact ones.
 
     const products = await Product.findAll({
       where,
-      include: [{ model: User, as: "seller", attributes: ["id", "name", "email"] }],
+      include: [{
+        model: User,
+        as: "seller",
+        attributes: ["id", "name", "email", "latitude", "longitude"],
+      }],
     });
 
-    return ok(res, products);
+    const lat = buyerLat != null ? parseFloat(buyerLat) : null;
+    const lng = buyerLng != null ? parseFloat(buyerLng) : null;
+
+    let ranked = products.map((p) => {
+      const plain = p.toJSON();
+      const scores = scoreProduct(plain, { term: search, category, buyerLat: lat, buyerLng: lng });
+      return { ...plain, ...scores };
+    });
+
+    // When a search term was typed, drop results with zero keyword match
+    // rather than returning everything regardless of relevance.
+    if (search) {
+      ranked = ranked.filter((p) => p.keywordScore > 0);
+    }
+
+    ranked.sort((a, b) => b.relevanceScore - a.relevanceScore);
+
+    if (!sellerId && (search || category)) {
+      SearchQuery.create({
+        term: search || null,
+        category: category && category !== "All" ? category : null,
+        resultCount: ranked.length,
+        userId: req.user?.id || null,
+      }).catch(() => {});
+    }
+
+    return ok(res, ranked);
   } catch (err) {
     return fail(res, 500, "We couldn't load the products right now. Please try again in a moment.", err);
   }
 });
 
 // A single product's details — used on the product page.
-router.get("/:id", async (req, res) => {
+router.get("/:id", optionalAuth, async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id, {
       include: [{ model: User, as: "seller", attributes: ["id", "name", "email"] }],
@@ -39,6 +72,11 @@ router.get("/:id", async (req, res) => {
     if (!product) {
       return fail(res, 404, "We couldn't find that product — it may have been removed.");
     }
+
+    ProductView.create({
+      productId: product.id,
+      userId: req.user?.id || null,
+    }).catch(() => {});
 
     return ok(res, product);
   } catch (err) {
@@ -54,7 +92,7 @@ router.post("/", authenticate, requireRole("seller"), async (req, res) => {
       return fail(res, 403, "Your seller account is still pending verification. You can list products once it's approved.");
     }
 
-    const { name, description, price, category, image } = req.body;
+    const { name, description, price, category, image, stock } = req.body;
 
     if (!name || !price || !category) {
       return fail(res, 400, "Please fill in the product name, price, and category before saving.");
@@ -66,6 +104,7 @@ router.post("/", authenticate, requireRole("seller"), async (req, res) => {
       price,
       category,
       image,
+      stock: stock ?? 0,
       sellerId: req.user.id,
     });
 

@@ -3,7 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const { fn, col, literal } = require("sequelize");
-const { Order, OrderItem, Product, User } = require("../models");
+const { Order, OrderItem, Product, User, ProductView, SearchQuery } = require("../models");
 const authenticate = require("../middleware/auth");
 const requireRole = require("../middleware/requireRole");
 const { ok, fail } = require("../lib/responses");
@@ -45,6 +45,107 @@ router.get("/public-summary", async (req, res) => {
     });
   } catch (err) {
     return fail(res, 500, "We couldn't load the analytics summary.", err);
+  }
+});
+
+// Composite product demand: combines order frequency, product views, and
+// search-query matches — the three signals the study identifies as inputs
+// for demand analytics, relevance ranking, and recommendations.
+router.get("/top-products", async (req, res) => {
+  try {
+    const start = daysAgo(7);
+
+    const [orderRows, viewRows, allProducts, searchRows] = await Promise.all([
+      OrderItem.findAll({
+        attributes: ["productId", [fn("SUM", col("OrderItem.quantity")), "orders"]],
+        where: { createdAt: { [Op.gte]: start } },
+        group: ["productId"],
+        raw: true,
+      }),
+      ProductView.findAll({
+        attributes: ["productId", [fn("COUNT", col("id")), "views"]],
+        where: { createdAt: { [Op.gte]: start } },
+        group: ["productId"],
+        raw: true,
+      }),
+      Product.findAll({
+        attributes: ["id", "name", "category", "price", "image"],
+        include: [{ model: User, as: "seller", attributes: ["id", "name"] }],
+      }),
+      SearchQuery.findAll({
+        attributes: ["term"],
+        where: { createdAt: { [Op.gte]: start }, term: { [Op.ne]: null } },
+        raw: true,
+      }),
+    ]);
+
+    const orderMap = {};
+    orderRows.forEach((r) => { orderMap[r.productId] = parseInt(r.orders, 10); });
+
+    const viewMap = {};
+    viewRows.forEach((r) => { viewMap[r.productId] = parseInt(r.views, 10); });
+
+    const terms = searchRows.map((r) => r.term.toLowerCase());
+
+    const scored = allProducts.map((p) => {
+      const name = p.name.toLowerCase();
+      const searchMatches = terms.filter((t) => name.includes(t)).length;
+      const orders = orderMap[p.id] || 0;
+      const views = viewMap[p.id] || 0;
+
+      // Order frequency carries the most weight (an actual purchase),
+      // views next (expressed interest), search matches last (typed
+      // intent without necessarily viewing or buying).
+      const demandScore = orders * 3 + views * 1 + searchMatches * 0.5;
+
+      return {
+        productId: p.id,
+        name: p.name,
+        category: p.category,
+        sellerName: p.seller?.name || "Unknown Seller",
+        orders,
+        views,
+        searchMatches,
+        demandScore: Math.round(demandScore * 100) / 100,
+      };
+    });
+
+    scored.sort((a, b) => b.demandScore - a.demandScore);
+
+    return ok(res, scored.slice(0, 10));
+  } catch (err) {
+    return fail(res, 500, "We couldn't load product demand.", err);
+  }
+});
+
+// Most frequent search terms in the last 7 days — including ones that
+// returned few or zero results, which can reveal unmet seller demand.
+router.get("/trending-searches", async (req, res) => {
+  try {
+    const start = daysAgo(7);
+
+    const rows = await SearchQuery.findAll({
+      attributes: [
+        "term",
+        [fn("COUNT", col("id")), "count"],
+        [fn("AVG", col("resultCount")), "avgResults"],
+      ],
+      where: { createdAt: { [Op.gte]: start }, term: { [Op.ne]: null } },
+      group: ["term"],
+      order: [[fn("COUNT", col("id")), "DESC"]],
+      limit: 10,
+      raw: true,
+    });
+
+    const result = rows.map((r) => ({
+      term: r.term,
+      count: parseInt(r.count, 10),
+      avgResults: Math.round(parseFloat(r.avgResults) * 10) / 10,
+    }));
+
+    return ok(res, result);
+  } catch (err) {
+    return fail(res, 500, "We couldn't load trending searches.", err);
   }
 });
 

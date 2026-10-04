@@ -24,29 +24,38 @@ export default function Analytics() {
   const [barangays, setBarangays] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [topProducts, setTopProducts] = useState([]);
+  const [trendingSearches, setTrendingSearches] = useState([]);
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [summaryData, trendData, categoryData, sellerData, barangayData] =
-          await Promise.all([
-            reportsApi.getPublicSummary(),
-            reportsApi.getWeeklyTrend(),
-            reportsApi.getCategoryDemand(),
-            reportsApi.getTopSellers(),
-            reportsApi.getBarangayDemand(),
-          ]);
+          const [summaryData, trendData, categoryData, sellerData, barangayData, productData, searchData] =
+            await Promise.all([
+              reportsApi.getPublicSummary(),
+              reportsApi.getWeeklyTrend(),
+              reportsApi.getCategoryDemand(),
+              reportsApi.getTopSellers(),
+              reportsApi.getBarangayDemand(),
+              reportsApi.getTopProducts(),
+              reportsApi.getTrendingSearches(),
+            ]);
 
-        setSummary(unwrapObject(summaryData));
-        setTrend(unwrap(trendData));
-        setCategories(unwrap(categoryData));
-        setTopSellers(unwrap(sellerData));
-        setBarangays(unwrap(barangayData));
+          setSummary(unwrapObject(summaryData));
+          setTrend(unwrap(trendData));
+          setCategories(unwrap(categoryData));
+          setTopSellers(unwrap(sellerData));
+          setBarangays(unwrap(barangayData));
+          setTopProducts(unwrap(productData));
+          setTrendingSearches(unwrap(searchData));
+
       } catch (err) {
         setError("We couldn't load the analytics right now. Please try again.");
         setTrend([]);
         setCategories([]);
         setTopSellers([]);
+        setTopProducts([]);
+        setTrendingSearches([]);
         setBarangays([]);
         setSummary(null);
       } finally {
@@ -227,6 +236,39 @@ export default function Analytics() {
           ))}
         </div>
       )}
+
+      <h3 className="analytics-section-title">Top-Demand Products</h3>
+      {topProducts.length === 0 ? (
+        <p className="empty-state chat-empty-small">Not enough activity yet.</p>
+      ) : (
+        <div className="top-sellers-grid">
+          {topProducts.map((p) => (
+            <div className="top-seller-card" key={p.productId}>
+              <span className="top-seller-name">{p.name}</span>
+              <span className="top-seller-orders">
+                {p.orders} orders · {p.views} views · {p.sellerName}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <h3 className="analytics-section-title">Trending Searches</h3>
+      {trendingSearches.length === 0 ? (
+        <p className="empty-state chat-empty-small">No searches logged yet.</p>
+      ) : (
+        <div className="trending-search-list">
+          {trendingSearches.map((s) => (
+            <div className="trending-search-row" key={s.term}>
+              <span className="trending-search-term">"{s.term}"</span>
+              <span className="trending-search-meta">
+                {s.count} searches · avg {s.avgResults} results
+                {s.avgResults < 1 && <span className="trending-search-gap"> — unmet demand</span>}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}      
     </section>
   );
 }

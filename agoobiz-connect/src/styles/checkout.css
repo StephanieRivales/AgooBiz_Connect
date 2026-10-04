@@ -81,6 +81,33 @@
   font-size: 18px;
 }
 
+/* ===================== */
+/* E-Wallet Options */
+/* ===================== */
+
+.ewallet-options {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid #F5D6AE;
+  border-radius: 14px;
+  background: #FFF8F1;
+}
+
+.ewallet-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E1610;
+}
+
+.ewallet-option {
+  margin-bottom: 8px;
+}
+
+.ewallet-option:last-child {
+  margin-bottom: 0;
+}
+
 .checkout-summary {
   background: #ffffff;
   border-radius: 16px;
