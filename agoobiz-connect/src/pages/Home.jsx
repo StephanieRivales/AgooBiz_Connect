@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import Dropdown from "../components/Dropdown";
@@ -21,9 +21,9 @@ export default function Home() {
   const [category, setCategory] = useState("All");
 
   const categories = [
-  "All", "Birthday", "Fiesta", "Wedding",
-  "Christmas / Noche Buena", "Baptismal", "Graduation", "Wake / Lamay",
-];
+    "All", "Birthday", "Fiesta", "Wedding",
+    "Christmas / Noche Buena", "Baptismal", "Graduation", "Wake / Lamay",
+  ];
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ export default function Home() {
     navigate(`/shop?search=${encodeURIComponent(pill)}`);
   };
 
-     if (role === "seller") {
+  if (role === "seller") {
     const stats = [
       { label: "Today's Orders", value: "8", icon: "📦" },
       { label: "Pending", value: "3", icon: "⏳" },
@@ -49,10 +49,8 @@ export default function Home() {
       { id: "ORD-1039", buyer: "Carlo R.", total: "₱95", status: "Completed" },
     ];
 
-
     return (
       <section className="seller-dashboard">
-
         <div className="seller-dash-header">
           <div>
             <h1>Kumusta, {user?.name || "Seller"}!</h1>
@@ -60,9 +58,8 @@ export default function Home() {
               Manage your kitchen storefront · {user?.barangay || "Agoo, La Union"}
             </p>
           </div>
-          <a href="/my-products" className="btn-primary">+ Add Product</a>
+          <Link to="/my-products" className="btn-primary">+ Add Product</Link>
         </div>
-
 
         <div className="stat-grid">
           {stats.map((s) => (
@@ -76,12 +73,11 @@ export default function Home() {
           ))}
         </div>
 
-
         <div className="seller-dash-grid">
           <div className="dash-panel">
             <div className="dash-panel-head">
               <h2>Recent Orders</h2>
-              <a href="/orders">View all</a>
+              <Link to="/orders">View all</Link>
             </div>
             <table className="orders-table">
               <thead>
@@ -112,13 +108,12 @@ export default function Home() {
           <div className="dash-panel">
             <div className="dash-panel-head">
               <h2>Quick Actions</h2>
-            
             </div>
             <ul className="quick-action-list">
-              <li><a href="/my-products">My Products</a></li>
-              <li><a href="/orders">Manage Orders</a></li>
-              <li><a href="/analytics">Demand Analytics</a></li>
-              <li><a href="/chat">Messages</a></li>
+              <li><Link to="/my-products">My Products</Link></li>
+              <li><Link to="/orders">Manage Orders</Link></li>
+              <li><Link to="/analytics">Demand Analytics</Link></li>
+              <li><Link to="/chat">Messages</Link></li>
             </ul>
           </div>
         </div>
@@ -126,79 +121,79 @@ export default function Home() {
     );
   }
 
-if (role === "buyer") {
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const cartTotal = cart.reduce(
-    (sum, item) => sum + item.quantity * Number(item.product?.price ?? item.price ?? 0),
-    0
-  );
+  if (role === "buyer") {
+    const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const cartTotal = cart.reduce(
+      (sum, item) => sum + item.quantity * Number(item.product?.price ?? item.price ?? 0),
+      0
+    );
 
-  return (
-    <section className="seller-dashboard">
-      <div className="seller-dash-header">
-        <div>
-          <h1>Kumusta, {user?.name || "there"}!</h1>
-          <p className="seller-dash-sub">Ready to order for your next celebration?</p>
-        </div>
-        <a href="/shop" className="btn-primary">Browse Occasion Food</a>
-      </div>
-
-      <div className="stat-grid">
-        <div className="stat-card">
-          <span className="stat-icon">🛒</span>
+    return (
+      <section className="seller-dashboard">
+        <div className="seller-dash-header">
           <div>
-            <p className="stat-value">{cartCount}</p>
-            <p className="stat-label">Items in Cart</p>
+            <h1>Kumusta, {user?.name || "there"}!</h1>
+            <p className="seller-dash-sub">Ready to order for your next celebration?</p>
           </div>
+          <Link to="/shop" className="btn-primary">Browse Occasion Food</Link>
         </div>
-        <div className="stat-card">
-          <span className="stat-icon">₱</span>
-          <div>
-            <p className="stat-value">₱{cartTotal.toFixed(2)}</p>
-            <p className="stat-label">Cart Total</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <span className="stat-icon">📍</span>
-          <div>
-            <p className="stat-value">Agoo</p>
-            <p className="stat-label">La Union</p>
-          </div>
-        </div>
-      </div>
 
-      <div className="seller-dash-grid">
-        <div className="dash-panel">
-          <div className="dash-panel-head">
-            <h2>Shop by Occasion</h2>
+        <div className="stat-grid">
+          <div className="stat-card">
+            <span className="stat-icon">🛒</span>
+            <div>
+              <p className="stat-value">{cartCount}</p>
+              <p className="stat-label">Items in Cart</p>
+            </div>
           </div>
-          <div className="category-pill-row">
-            {categories.filter((c) => c !== "All").map((cat) => (
-              <button
-                key={cat}
-                className="category-pill"
-                onClick={() => navigate(`/shop?category=${encodeURIComponent(cat)}`)}
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="stat-card">
+            <span className="stat-icon">₱</span>
+            <div>
+              <p className="stat-value">₱{cartTotal.toFixed(2)}</p>
+              <p className="stat-label">Cart Total</p>
+            </div>
+          </div>
+          <div className="stat-card">
+            <span className="stat-icon">📍</span>
+            <div>
+              <p className="stat-value">Agoo</p>
+              <p className="stat-label">La Union</p>
+            </div>
           </div>
         </div>
 
-        <div className="dash-panel">
-          <div className="dash-panel-head">
-            <h2>Quick Actions</h2>
+        <div className="seller-dash-grid">
+          <div className="dash-panel">
+            <div className="dash-panel-head">
+              <h2>Shop by Occasion</h2>
+            </div>
+            <div className="category-pill-row">
+              {categories.filter((c) => c !== "All").map((cat) => (
+                <button
+                  key={cat}
+                  className="category-pill"
+                  onClick={() => navigate(`/shop?category=${encodeURIComponent(cat)}`)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
-          <ul className="quick-action-list">
-            <li><a href="/shop">Discover Sellers</a></li>
-            <li><a href="/cart">View Cart{cartCount > 0 ? ` (${cartCount})` : ""}</a></li>
-            <li><a href="/my-orders">My Orders</a></li>
-          </ul>
+
+          <div className="dash-panel">
+            <div className="dash-panel-head">
+              <h2>Quick Actions</h2>
+            </div>
+            <ul className="quick-action-list">
+              <li><Link to="/shop">Discover Sellers</Link></li>
+              <li><Link to="/cart">View Cart{cartCount > 0 ? ` (${cartCount})` : ""}</Link></li>
+              <li><Link to="/my-orders">My Orders</Link></li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
+    );
+  }
 
   if (role === "admin") {
     return (
@@ -207,8 +202,8 @@ if (role === "buyer") {
         <h3>Keep the marketplace running smoothly</h3>
         <p>Monitor sellers, manage users, and oversee platform activity.</p>
         <div className="home-quick-links">
-          <a href="/admin-dashboard" className="auth-submit-btn">Dashboard</a>
-          <a href="/admin/users" className="auth-submit-btn home-link-secondary">Manage Users</a>
+          <Link to="/admin-dashboard" className="auth-submit-btn">Dashboard</Link>
+          <Link to="/admin/users" className="auth-submit-btn home-link-secondary">Manage Users</Link>
         </div>
       </section>
     );

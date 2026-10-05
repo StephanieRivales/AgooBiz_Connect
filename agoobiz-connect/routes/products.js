@@ -6,7 +6,7 @@ const { Product, User } = require("../models");
 const authenticate = require("../middleware/auth");
 const requireRole = require("../middleware/requireRole");
 const { ok, fail } = require("../lib/responses");
-
+const { productUpload } = require("../middleware/upload");
 
 // Anyone can browse products — no login needed.
 // Supports ?category=Pancit and ?search=lechon to help narrow things down.
@@ -47,14 +47,14 @@ router.get("/:id", async (req, res) => {
 });
 
 // Sellers list a new dish here. Buyers and guests can't create products.
-router.post("/", authenticate, requireRole("seller"), async (req, res) => {
+router.post("/", authenticate, requireRole("seller"), productUpload.single("image"), async (req, res) => {
   try {
     const seller = await User.findByPk(req.user.id);
     if (!seller || seller.verificationStatus !== "approved") {
       return fail(res, 403, "Your seller account is still pending verification. You can list products once it's approved.");
     }
 
-    const { name, description, price, category, image } = req.body;
+    const { name, description, price, category, stock } = req.body;
 
     if (!name || !price || !category) {
       return fail(res, 400, "Please fill in the product name, price, and category before saving.");
@@ -65,7 +65,8 @@ router.post("/", authenticate, requireRole("seller"), async (req, res) => {
       description,
       price,
       category,
-      image,
+      image: req.file ? `/uploads/products/${req.file.filename}` : null,
+      stock: stock ?? 0,
       sellerId: req.user.id,
     });
 
@@ -76,7 +77,7 @@ router.post("/", authenticate, requireRole("seller"), async (req, res) => {
 });
 
 // Update a listing — only the seller who owns it (or an admin) can edit it.
-router.put("/:id", authenticate, requireRole("seller", "admin"), async (req, res) => {
+router.put("/:id", authenticate, requireRole("seller", "admin"), productUpload.single("image"), async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
 
@@ -89,7 +90,12 @@ router.put("/:id", authenticate, requireRole("seller", "admin"), async (req, res
       return fail(res, 403, "You can only edit products from your own shop.");
     }
 
-    await product.update(req.body);
+    const updates = { ...req.body };
+    if (req.file) {
+      updates.image = `/uploads/products/${req.file.filename}`;
+    }
+
+    await product.update(updates);
     return ok(res, product);
   } catch (err) {
     return fail(res, 500, "We couldn't update this product. Please try again.", err);

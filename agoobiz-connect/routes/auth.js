@@ -3,14 +3,13 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 const { ok, fail } = require("../lib/responses");
-const upload = require("../middleware/upload");
-
+const { verificationUpload } = require("../middleware/upload");
 const router = express.Router();
 
 // POST /api/auth/register
 router.post(
   "/register",
-  upload.fields([
+  verificationUpload.fields([
     { name: "validId", maxCount: 1 },
     { name: "proofOfAddress", maxCount: 1 },
   ]),

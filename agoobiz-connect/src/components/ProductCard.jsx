@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuthPrompt } from "../context/AuthPromptContext";
+import { resolveImageUrl } from "../utils/resolveImageUrl";
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
@@ -13,7 +14,7 @@ export default function ProductCard({ product }) {
     requireAuth(() => addToCart(product, 1));
   };
 
-  const img = product.image || product.imageUrl;
+  const img = resolveImageUrl(product.image || product.imageUrl);
   const seller = product.sellerName || product.seller?.name || "Local Seller";
 
   return (

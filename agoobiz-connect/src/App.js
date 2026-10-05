@@ -26,6 +26,7 @@ import Analytics from './pages/Analytics.jsx';
 import MyProducts from './pages/MyProducts.jsx';    
 import ScrollToHash from './components/ScrollToHash.jsx';
 import SplashScreen from './components/SplashScreen.jsx';
+import AdminUsers from './pages/AdminUsers.jsx';
 
 import './App.css';
 
@@ -66,6 +67,11 @@ export default function App() {
             <Route path="/chat" element={
               <ProtectedRoute>
                 <Chat />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/users" element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminUsers />
               </ProtectedRoute>
             } />
             <Route path="/checkout" element={

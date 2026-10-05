@@ -1,68 +1,109 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../context/AuthContext";
+import { productsApi } from "../api/productsApi";
+import { resolveImageUrl } from "../utils/resolveImageUrl";
 import "../App.css";
 
-const DEMO = [
-  {
-    id: 1,
-    name: "Special Puto Bumbong",
-    category: "Kakanin",
-    price: 120,
-    stock: 25,
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "Lechon Manok (Half)",
-    category: "Ulam",
-    price: 280,
-    stock: 8,
-    status: "Active",
-  },
-  {
-    id: 3,
-    name: "Ensaymada Box of 6",
-    category: "Pastries",
-    price: 150,
-    stock: 0,
-    status: "Out of stock",
-  },
+const categories = [
+  "Birthday", "Fiesta", "Wedding",
+  "Christmas / Noche Buena", "Baptismal", "Graduation", "Wake / Lamay",
 ];
+
+const emptyForm = { name: "", description: "", category: categories[0], price: "", stock: "", image: "" };
 
 export default function MyProducts() {
   const { user } = useAuth();
-  const [products, setProducts] = useState(DEMO);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({
-    name: "",
-    category: "Kakanin",
-    price: "",
-    stock: "",
-  });
+  const [form, setForm] = useState(emptyForm);
+  const [imageFile, setImageFile] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [error, setError] = useState("");
+  const [saving, setSaving] = useState(false);
 
-  const categories = ["Kakanin", "Ulam", "Pastries", "Beverages", "Snacks", "Frozen"];
+  const previewSrc = useMemo(() => {
+    if (imageFile) return URL.createObjectURL(imageFile);
+    if (form.image) return resolveImageUrl(form.image);
+    return null;
+  }, [imageFile, form.image]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!form.name || !form.price) return;
+  const loadProducts = () => {
+  if (!user) return;
+  setLoading(true);
+  productsApi.getAll({ sellerId: user.id })
+    .then((data) => setProducts(Array.isArray(data) ? data : []))
+    .catch(() => setError("We couldn't load your products right now."))
+    .finally(() => setLoading(false));
+  };
 
-    const newProduct = {
-      id: Date.now(),
-      name: form.name,
-      category: form.category,
-      price: Number(form.price),
-      stock: Number(form.stock) || 0,
-      status: Number(form.stock) > 0 ? "Active" : "Out of stock",
-    };
+  useEffect(loadProducts, [user]);
 
-    setProducts((prev) => [newProduct, ...prev]);
-    setForm({ name: "", category: "Kakanin", price: "", stock: "" });
+  const startEdit = (product) => {
+    setEditingId(product.id);
+    setForm({
+      name: product.name,
+      description: product.description || "",
+      category: product.category,
+      price: product.price,
+      stock: product.stock,
+      image: product.image || "",
+    });
+    setImageFile(null);
+    setShowForm(true);
+  };
+
+  const resetForm = () => {
+    setForm(emptyForm);
+    setImageFile(null);
+    setEditingId(null);
     setShowForm(false);
+    setError("");
   };
 
-  const handleDelete = (id) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.name || !form.price || !form.category) return;
+
+    setSaving(true);
+    setError("");
+    try {
+      const payload = new FormData();
+      payload.append("name", form.name);
+      payload.append("description", form.description);
+      payload.append("category", form.category);
+      payload.append("price", form.price);
+      payload.append("stock", form.stock || 0);
+      if (imageFile) payload.append("image", imageFile);
+
+      if (editingId) {
+        await productsApi.update(editingId, payload);
+      } else {
+        await productsApi.create(payload);
+      }
+
+      resetForm();
+      loadProducts();
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "We couldn't save this product. Please try again."
+      );
+    } finally {
+      setSaving(false);
+    }
   };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Remove this product? This can't be undone.")) return;
+    try {
+      await productsApi.remove(id);
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    } catch {
+      setError("We couldn't delete this product. Please try again.");
+    }
+  };
+
+  const isPending = error.toLowerCase().includes("pending verification");
 
   return (
     <section className="seller-dashboard">
@@ -70,22 +111,45 @@ export default function MyProducts() {
         <div>
           <h1>My Products</h1>
           <p className="seller-dash-sub">
-            {user?.name || "Seller"} · {products.length} listing
-            {products.length !== 1 ? "s" : ""}
+            {user?.name || "Seller"} · {products.length} listing{products.length !== 1 ? "s" : ""}
           </p>
         </div>
-        <button
-          type="button"
-          className="btn-primary"
-          onClick={() => setShowForm((v) => !v)}
-        >
+        <button type="button" className="btn-primary" onClick={() => (showForm ? resetForm() : setShowForm(true))}>
           {showForm ? "Cancel" : "+ Add Product"}
         </button>
       </div>
 
+      {error && <p className="auth-error">{error}</p>}
+      {isPending && (
+        <p className="pending-note">
+          Your seller account is still being reviewed — you'll be able to list products as soon as it's approved.
+        </p>
+      )}
+
       {showForm && (
         <form className="dash-panel product-form" onSubmit={handleSubmit}>
-          <h2 style={{ marginTop: 0, fontSize: "1.1rem" }}>New product</h2>
+          <h2 style={{ marginTop: 0, fontSize: "1.1rem" }}>
+            {editingId ? "Edit product" : "New product"}
+          </h2>
+
+          <div className="product-image-upload">
+            <div className="product-image-preview">
+              {previewSrc ? (
+                <img src={previewSrc} alt="Product preview" />
+              ) : (
+                <span className="product-placeholder">🍲</span>
+              )}
+            </div>
+            <div>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={(e) => setImageFile(e.target.files[0] || null)}
+              />
+              <p className="field-hint">JPG, PNG, or WEBP, up to 5MB.</p>
+            </div>
+          </div>
+
           <div className="product-form-grid">
             <input
               type="text"
@@ -99,9 +163,7 @@ export default function MyProducts() {
               onChange={(e) => setForm({ ...form, category: e.target.value })}
             >
               {categories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
+                <option key={c} value={c}>{c}</option>
               ))}
             </select>
             <input
@@ -120,14 +182,22 @@ export default function MyProducts() {
               value={form.stock}
               onChange={(e) => setForm({ ...form, stock: e.target.value })}
             />
+            <input
+              type="text"
+              placeholder="Short description"
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+            />
           </div>
-          <button type="submit" className="btn-primary" style={{ marginTop: 12 }}>
-            Save product
+          <button type="submit" className="btn-primary" style={{ marginTop: 12 }} disabled={saving}>
+            {saving ? "Saving..." : editingId ? "Update product" : "Save product"}
           </button>
         </form>
       )}
 
-      {products.length === 0 ? (
+      {loading ? (
+        <p className="shop-count">Loading your products...</p>
+      ) : products.length === 0 ? (
         <div className="shop-empty">
           <span className="shop-empty-icon">🍲</span>
           <p>No products yet. Add your first listing.</p>
@@ -137,6 +207,7 @@ export default function MyProducts() {
           <table className="orders-table">
             <thead>
               <tr>
+                <th></th>
                 <th>Product</th>
                 <th>Category</th>
                 <th>Price</th>
@@ -149,26 +220,27 @@ export default function MyProducts() {
               {products.map((p) => (
                 <tr key={p.id}>
                   <td>
-                    <strong>{p.name}</strong>
+                    {p.image ? (
+                      <img src={resolveImageUrl(p.image)} alt={p.name} className="product-thumb" />
+                    ) : (
+                      <span className="product-thumb product-thumb-placeholder">🍲</span>
+                    )}
                   </td>
+                  <td><strong>{p.name}</strong></td>
                   <td>{p.category}</td>
                   <td>₱{Number(p.price).toFixed(2)}</td>
                   <td>{p.stock}</td>
                   <td>
-                    <span
-                      className={`status-badge ${
-                        p.status === "Active" ? "status-ready" : "status-pending"
-                      }`}
-                    >
-                      {p.status}
+                    <span className={`status-badge ${p.stock > 0 ? "status-ready" : "status-pending"}`}>
+                      {p.stock > 0 ? "Active" : "Out of stock"}
                     </span>
                   </td>
                   <td>
-                    <button
-                      type="button"
-                      className="btn-text-danger"
-                      onClick={() => handleDelete(p.id)}
-                    >
+                    <button type="button" className="btn-text-danger" style={{ color: "#1565c0" }} onClick={() => startEdit(p)}>
+                      Edit
+                    </button>
+                    {" "}
+                    <button type="button" className="btn-text-danger" onClick={() => handleDelete(p.id)}>
                       Delete
                     </button>
                   </td>

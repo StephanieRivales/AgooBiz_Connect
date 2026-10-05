@@ -270,3 +270,238 @@
     grid-template-columns: 1fr;
   }
 }
+
+.product-image-upload {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.product-image-preview {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  background: #FFF8F1;
+  border: 1px dashed #F5D6AE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.product-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+}
+
+.product-thumb-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFF8F1;
+  font-size: 18px;
+}
+
+.status-cancelled { background: #ffebee; color: #c62828; }
+
+/* ===================== */
+/* Admin: pending sellers */
+/* ===================== */
+.pending-seller-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.pending-seller-card {
+  background: #FFF8F1;
+  border: 1px solid #F5D6AE;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pending-seller-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pending-seller-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pending-seller-name {
+  font-weight: 700;
+  color: #1E1610;
+  font-size: 0.95rem;
+}
+
+.pending-seller-email {
+  font-size: 0.78rem;
+  color: #A9765A;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pending-seller-location {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #4A3A2E;
+}
+
+.pending-seller-docs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.doc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #FFFFFF;
+  border: 1px solid #F5D6AE;
+  color: #C9722A;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.doc-link:hover {
+  background: #FDEBD3;
+  border-color: #E8632B;
+}
+
+.pending-seller-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  margin-bottom: 5px;
+}
+
+.btn-approve,
+.btn-reject {
+  flex: 1;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.btn-approve {
+  background: #2E7D32;
+  color: #FFFFFF;
+}
+
+.btn-approve:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.btn-reject {
+  background: #FFFFFF;
+  color: #C62828;
+  border: 1px solid #F3C6C6;
+}
+
+.btn-reject:hover:not(:disabled) {
+  background: #FFEBEE;
+}
+
+.btn-approve:disabled,
+.btn-reject:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===================== */
+/* Admin: all users table */
+/* ===================== */
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.user-avatar-seller {
+  background: linear-gradient(135deg, #E8632B, #F7A857);
+  color: #FFFFFF;
+}
+
+.user-avatar-buyer {
+  background: #E3EEFB;
+  color: #1565C0;
+}
+
+.user-avatar-admin {
+  background: #2C2420;
+  color: #F7A857;
+}
+
+.user-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-name-cell-name {
+  font-weight: 700;
+  color: #1E1610;
+  font-size: 0.9rem;
+}
+
+.user-name-cell-email {
+  font-size: 0.78rem;
+  color: #A9765A;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.role-badge-admin { background: #2C2420; color: #F7A857; }
+.role-badge-seller { background: #FDEBD3; color: #C9722A; }
+.role-badge-buyer { background: #E3EEFB; color: #1565C0; }
+
+.admin-users-dash {
+  color: #C4A587;
+}
+
+@media (max-width: 600px) {
+  .pending-seller-grid {
+    grid-template-columns: 1fr;
+  }
+}
