@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { productsApi } from "../api/productsApi";
+import { resolveImageUrl } from "../utils/resolveImageUrl";
 import "../App.css";
 
 export default function ProductList() {
@@ -12,7 +13,7 @@ export default function ProductList() {
     const fetchProducts = async () => {
       try {
         const data = await productsApi.getAll();
-        setProducts(data);
+        setProducts(Array.isArray(data) ? data : []);
       } catch (err) {
         setError("We couldn't load the products right now. Please try again.");
       } finally {
@@ -62,7 +63,7 @@ export default function ProductList() {
           >
             <div className="product-image-wrap">
               <img
-                src={product.image}
+                src={resolveImageUrl(product.image)}
                 alt={product.name}
                 onError={(e) => (e.target.style.display = "none")}
               />

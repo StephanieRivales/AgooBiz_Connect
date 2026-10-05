@@ -89,6 +89,10 @@ router.post("/login", async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return fail(res, 401, "Invalid email or password.");
 
+    if (!user.isActive) {
+      return fail(res, 403, "Your account has been deactivated. Please contact the AgooBiz admin.");
+    }
+
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET || "dev-secret",

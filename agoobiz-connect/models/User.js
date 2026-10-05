@@ -49,6 +49,11 @@ const User = sequelize.define("User", {
     allowNull: false,
     defaultValue: "approved", // buyers skip review; sellers are set to "pending" at signup
   },
+  isActive: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true, // admins can deactivate an account without deleting it
+  },
   role: {
     type: DataTypes.ENUM("buyer", "seller", "admin"),
     allowNull: false,

@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import { productsApi } from "../api/productsApi";
 import "../App.css";
 import "../styles/shop.css";
 
@@ -9,21 +10,20 @@ const categories = [
   "Christmas / Noche Buena", "Baptismal", "Graduation", "Wake / Lamay",
 ];
 
-// Demo products for design (replace with API later)
-const DEMO_PRODUCTS = [
-  { id: 1, name: "Lechon (Whole, Small)", price: 3500, category: "Fiesta", image: "", seller: { name: "Aling Nena's Kitchen" } },
-  { id: 2, name: "Pancit Malabon Tray", price: 850, category: "Birthday", image: "", seller: { name: "Don Yeahh Foods" } },
-  { id: 3, name: "Biko Tray", price: 450, category: "Fiesta", image: "", seller: { name: "Macalva Bakes" } },
-  { id: 4, name: "Embutido (Log, 6pcs)", price: 600, category: "Christmas / Noche Buena", image: "", seller: { name: "Agoo Coffee Co." } },
-  { id: 5, name: "Leche Flan Tray", price: 350, category: "Wedding", image: "", seller: { name: "Sweet Agoo" } },
-  { id: 6, name: "Buko Salad (Big)", price: 500, category: "Baptismal", image: "", seller: { name: "Tita Rosa" } },
-];
-
 export default function Shop() {
   const [searchParams] = useSearchParams();
-  const [products] = useState(DEMO_PRODUCTS);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "All");
+
+  useEffect(() => {
+    productsApi.getAll()
+      .then((data) => setProducts(Array.isArray(data) ? data : []))
+      .catch(() => setLoadError("We couldn't load the products right now. Please try again."))
+      .finally(() => setLoading(false));
+  }, []);
 
   const filtered = useMemo(() => {
     return products.filter((p) => {
@@ -69,9 +69,15 @@ export default function Shop() {
         </div>
       </div>
 
-      <p className="shop-count">{filtered.length} product{filtered.length !== 1 ? "s" : ""}</p>
+      <p className="shop-count">
+        {loading ? "Loading products..." : `${filtered.length} product${filtered.length !== 1 ? "s" : ""}`}
+      </p>
 
-      {filtered.length === 0 ? (
+      {loadError ? (
+        <div className="shop-empty">
+          <p>{loadError}</p>
+        </div>
+      ) : !loading && filtered.length === 0 ? (
         <div className="shop-empty">
           <span className="shop-empty-icon">🍽️</span>
           <p>No products match your search.</p>

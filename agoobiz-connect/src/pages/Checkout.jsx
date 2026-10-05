@@ -8,7 +8,7 @@ import "../App.css";
 const paymentMethods = [
   { key: "cod", label: "Cash on Delivery", icon: "💵" },
   { key: "gcash", label: "GCash", icon: "📱" },
-  { key: "card", label: "Credit/Debit Card", icon: "💳" },
+  { key: "card", label: "Maya", icon: "📱" },
 ];
 
 export default function Checkout() {

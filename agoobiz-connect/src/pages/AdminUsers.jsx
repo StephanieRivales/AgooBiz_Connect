@@ -39,6 +39,25 @@ export default function AdminUsers() {
     }
   };
 
+  const handleToggleActive = async (u) => {
+    const nextActive = u.isActive === false; // currently deactivated -> activate
+    const verb = nextActive ? "activate" : "deactivate";
+    if (!nextActive && !window.confirm(`Deactivate ${u.name}? They won't be able to log in until you activate the account again.`)) return;
+
+    setActingOnId(u.id);
+    setError("");
+    try {
+      await usersApi.update(u.id, { isActive: nextActive });
+      setUsers((prev) =>
+        prev.map((x) => (x.id === u.id ? { ...x, isActive: nextActive } : x))
+      );
+    } catch (err) {
+      setError(err.response?.data?.message || `We couldn't ${verb} that account. Please try again.`);
+    } finally {
+      setActingOnId(null);
+    }
+  };
+
   const handleDelete = async (id) => {
     if (!window.confirm("Remove this account? This can't be undone.")) return;
     setActingOnId(id);
@@ -105,7 +124,7 @@ export default function AdminUsers() {
 
       {error && <p className="auth-error">{error}</p>}
 
-      <div className="dash-panel">
+      <div className="dash-panel admin-users-panel">
         <div className="dash-panel-head">
           <h2>Pending Seller Verification</h2>
         </div>
@@ -176,7 +195,7 @@ export default function AdminUsers() {
         )}
       </div>
 
-      <div className="dash-panel">
+      <div className="dash-panel admin-users-panel">
         <div className="dash-panel-head">
           <h2>All Users</h2>
         </div>
@@ -186,12 +205,13 @@ export default function AdminUsers() {
               <th>User</th>
               <th>Role</th>
               <th>Status</th>
+              <th>Account</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {everyoneElse.map((u) => (
-              <tr key={u.id}>
+              <tr key={u.id} className={u.isActive === false ? "user-row-inactive" : ""}>
                 <td>
                   <div className="user-name-cell">
                     <span className={`user-avatar user-avatar-${u.role}`}>{initials(u.name)}</span>
@@ -222,15 +242,34 @@ export default function AdminUsers() {
                   )}
                 </td>
                 <td>
+                  <span
+                    className={`status-badge ${
+                      u.isActive === false ? "status-cancelled" : "status-ready"
+                    }`}
+                  >
+                    {u.isActive === false ? "Deactivated" : "Active"}
+                  </span>
+                </td>
+                <td className="user-actions-cell">
                   {u.id !== currentAdmin?.id && (
-                    <button
-                      type="button"
-                      className="btn-text-danger"
-                      disabled={actingOnId === u.id}
-                      onClick={() => handleDelete(u.id)}
-                    >
-                      Delete
-                    </button>
+                    <>
+                      <button
+                        type="button"
+                        className={u.isActive === false ? "btn-text-activate" : "btn-text-deactivate"}
+                        disabled={actingOnId === u.id}
+                        onClick={() => handleToggleActive(u)}
+                      >
+                        {u.isActive === false ? "Activate" : "Deactivate"}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-text-danger"
+                        disabled={actingOnId === u.id}
+                        onClick={() => handleDelete(u.id)}
+                      >
+                        Delete
+                      </button>
+                    </>
                   )}
                 </td>
               </tr>

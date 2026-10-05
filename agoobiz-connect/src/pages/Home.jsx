@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import Dropdown from "../components/Dropdown";
+import ProductCard from "../components/ProductCard";
+import { productsApi } from "../api/productsApi";
+import { usersApi } from "../api/usersApi";
 import "../App.css";
 
 const categoryPills = [
@@ -16,6 +19,27 @@ export default function Home() {
   const { cart } = useCart();
   const role = user?.role || "guest";
   const navigate = useNavigate();
+
+  const [featured, setFeatured] = useState([]);
+
+  useEffect(() => {
+    productsApi.getAll()
+      .then((data) => setFeatured(Array.isArray(data) ? data.slice(0, 8) : []))
+      .catch(() => {});
+  }, []);
+
+  const [adminUsers, setAdminUsers] = useState([]);
+  const [adminProducts, setAdminProducts] = useState([]);
+
+  useEffect(() => {
+    if (role !== "admin") return;
+    usersApi.getAll()
+      .then((data) => setAdminUsers(Array.isArray(data) ? data : []))
+      .catch(() => {});
+    productsApi.getAll()
+      .then((data) => setAdminProducts(Array.isArray(data) ? data : []))
+      .catch(() => {});
+  }, [role]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("All");
@@ -191,19 +215,118 @@ export default function Home() {
             </ul>
           </div>
         </div>
+
+        {featured.length > 0 && (
+          <div className="dash-panel" style={{ marginTop: 16 }}>
+            <div className="dash-panel-head">
+              <h2>Fresh from our kitchens</h2>
+              <Link to="/shop">See all</Link>
+            </div>
+            <div className="product-grid">
+              {featured.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </div>
+        )}
       </section>
     );
   }
 
   if (role === "admin") {
+    const pendingSellers = adminUsers.filter(
+      (u) => u.role === "seller" && u.verificationStatus === "pending"
+    );
+    const approvedSellers = adminUsers.filter(
+      (u) => u.role === "seller" && u.verificationStatus === "approved"
+    ).length;
+    const buyers = adminUsers.filter((u) => u.role === "buyer").length;
+
     return (
-      <section className="home-content">
-        <h1>Admin Dashboard Overview</h1>
-        <h3>Keep the marketplace running smoothly</h3>
-        <p>Monitor sellers, manage users, and oversee platform activity.</p>
-        <div className="home-quick-links">
-          <Link to="/admin-dashboard" className="auth-submit-btn">Dashboard</Link>
-          <Link to="/admin/users" className="auth-submit-btn home-link-secondary">Manage Users</Link>
+      <section className="seller-dashboard">
+        <div className="seller-dash-header">
+          <div>
+            <h1>Admin Overview</h1>
+            <p className="seller-dash-sub">
+              Welcome back, {user?.name || "Admin"}. Here's how AgooBiz Connect is doing today.
+            </p>
+          </div>
+          <Link to="/admin/users" className="btn-primary">Manage Users</Link>
+        </div>
+
+        <div className="stat-grid">
+          <div className="stat-card">
+            <span className="stat-icon">👥</span>
+            <div>
+              <p className="stat-value">{adminUsers.length}</p>
+              <p className="stat-label">Total Accounts</p>
+            </div>
+          </div>
+          <div className="stat-card">
+            <span className="stat-icon">⏳</span>
+            <div>
+              <p className="stat-value">{pendingSellers.length}</p>
+              <p className="stat-label">Sellers Awaiting Review</p>
+            </div>
+          </div>
+          <div className="stat-card">
+            <span className="stat-icon">🍲</span>
+            <div>
+              <p className="stat-value">{approvedSellers}</p>
+              <p className="stat-label">Approved Sellers</p>
+            </div>
+          </div>
+          <div className="stat-card">
+            <span className="stat-icon">🛍️</span>
+            <div>
+              <p className="stat-value">{adminProducts.length}</p>
+              <p className="stat-label">Products Listed</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="seller-dash-grid">
+          <div className="dash-panel">
+            <div className="dash-panel-head">
+              <h2>Needs your review</h2>
+              <Link to="/admin/users">Open Manage Users</Link>
+            </div>
+            {pendingSellers.length === 0 ? (
+              <p className="empty-state chat-empty-small">
+                All caught up. No sellers are waiting for verification.
+              </p>
+            ) : (
+              <ul className="admin-review-list">
+                {pendingSellers.slice(0, 5).map((u) => (
+                  <li key={u.id}>
+                    <span className="user-avatar user-avatar-seller">
+                      {(u.name || "?").trim()[0]?.toUpperCase()}
+                    </span>
+                    <div className="admin-review-info">
+                      <strong>{u.name}</strong>
+                      <span>{u.barangay ? `${u.barangay}, Agoo` : u.email}</span>
+                    </div>
+                    <Link to="/admin/users" className="admin-review-link">Review</Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="dash-panel">
+            <div className="dash-panel-head">
+              <h2>Quick actions</h2>
+            </div>
+            <ul className="quick-action-list">
+              <li><Link to="/admin/users">Manage users and sellers</Link></li>
+              <li><Link to="/analytics">View demand analytics</Link></li>
+              <li><Link to="/admin-dashboard">Open full dashboard</Link></li>
+              <li><Link to="/shop">Browse the shop as a buyer</Link></li>
+            </ul>
+            <p className="admin-mini-note">
+              {buyers} buyer{buyers !== 1 ? "s" : ""} registered so far.
+            </p>
+          </div>
         </div>
       </section>
     );
@@ -263,6 +386,21 @@ export default function Home() {
           <span>Orders/month</span>
         </div>
       </div>
+
+      {featured.length > 0 && (
+        <div className="featured-section" style={{ marginTop: 32 }}>
+          <h2 className="how-it-works-title">Fresh from our kitchens</h2>
+          <div className="product-grid">
+            {featured.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+          <p style={{ textAlign: "center", marginTop: 16 }}>
+            <Link to="/shop" className="auth-submit-btn">Browse all products</Link>
+          </p>
+        </div>
+      )}
+
       <div id="how-it-works" className="how-it-works-section">
         <h2 className="how-it-works-title">How AgooBiz Connect works</h2>
         <div className="how-it-works-grid">

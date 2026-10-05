@@ -4,12 +4,12 @@ import api from "./api";
 export const productsApi = {
   getAll: async (params = {}) => {
     const res = await api.get("/products", { params });
-    return res.data;
+    return res.data.data; // backend wraps responses as { success, data }
   },
 
   getById: async (id) => {
     const res = await api.get(`/products/${id}`);
-    return res.data;
+    return res.data.data;
   },
 
   create: async (productData) => {

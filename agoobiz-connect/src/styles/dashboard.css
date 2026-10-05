@@ -95,6 +95,7 @@
   font-size: 0.95rem;
   border: none;
   cursor: pointer;
+  margin-right: 4px;
 }
 
 .stat-grid {
@@ -504,4 +505,102 @@
   .pending-seller-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ===================== */
+/* Admin: manage users   */
+/* ===================== */
+.admin-users-panel {
+  margin-top: 28px;
+}
+
+.user-row-inactive td:first-child,
+.user-row-inactive td:nth-child(2) {
+  opacity: 0.55;
+}
+
+.user-actions-cell {
+  white-space: nowrap;
+}
+
+.btn-text-activate,
+.btn-text-deactivate {
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.btn-text-activate { color: #2e7d32; }
+.btn-text-deactivate { color: #e65100; }
+
+.btn-text-activate:hover,
+.btn-text-deactivate:hover {
+  text-decoration: underline;
+}
+
+.btn-text-activate:disabled,
+.btn-text-deactivate:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Admin overview */
+.admin-review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-review-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3e6d8;
+}
+
+.admin-review-list li:last-child {
+  border-bottom: none;
+}
+
+.admin-review-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-review-info strong {
+  color: #1e1610;
+  font-size: 0.95rem;
+}
+
+.admin-review-info span {
+  color: #a9765a;
+  font-size: 0.8rem;
+}
+
+.admin-review-link {
+  color: #e8632b;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #fff3e8;
+}
+
+.admin-review-link:hover {
+  background: #fde3cc;
+}
+
+.admin-mini-note {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid #f3e6d8;
+  color: #a9765a;
+  font-size: 0.85rem;
 }

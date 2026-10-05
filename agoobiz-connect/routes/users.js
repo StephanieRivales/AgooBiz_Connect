@@ -49,6 +49,11 @@ router.put("/:id", authenticate, requireRole("admin"), async (req, res) => {
     const user = await User.findByPk(req.params.id);
     if (!user) return fail(res, 404, "That user doesn't exist.");
 
+    // Don't let an admin lock themselves out.
+    if (req.body.isActive === false && user.id === req.user.id) {
+      return fail(res, 400, "You can't deactivate your own account.");
+    }
+
     await user.update(req.body);
     return ok(res, user);
   } catch (err) {
