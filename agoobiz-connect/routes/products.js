@@ -17,6 +17,7 @@ router.get("/", async (req, res) => {
 
     if (category && category !== "All") where.category = category;
     if (search) where.name = { [Op.iLike]: `%${search}%` };
+    if (req.query.sellerId) where.sellerId = req.query.sellerId;
 
     const products = await Product.findAll({
       where,
@@ -72,7 +73,7 @@ router.post("/", authenticate, requireRole("seller"), productUpload.single("imag
 
     return ok(res, product, 201);
   } catch (err) {
-    return fail(res, 500, "We couldn't save your product. Please try again.", err);
+    return fail(res, 500, "SAVE ERROR: " + err.message, err);
   }
 });
 
