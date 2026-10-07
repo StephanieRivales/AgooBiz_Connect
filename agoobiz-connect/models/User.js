@@ -28,6 +28,16 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  orderCutoffStart: {
+    type: DataTypes.STRING(5),
+    allowNull: false,
+    defaultValue: "05:00",
+  },
+  orderCutoffEnd: {
+    type: DataTypes.STRING(5),
+    allowNull: false,
+    defaultValue: "20:00",
+  },
   latitude: {
     type: DataTypes.FLOAT,
     allowNull: true,
@@ -53,6 +63,19 @@ const User = sequelize.define("User", {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true, // admins can deactivate an account without deleting it
+  },
+  isBlocked: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  moderationReason: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  moderatedAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
   },
   role: {
     type: DataTypes.ENUM("buyer", "seller", "admin"),

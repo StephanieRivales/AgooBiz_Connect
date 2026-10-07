@@ -3,29 +3,24 @@ import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { ordersApi } from "../api/ordersApi";
+import Icon from "../components/Icon";
 import "../App.css";
 
-const paymentMethods = [
-  { key: "cod", label: "Cash on Delivery", icon: "💵" },
-  { key: "gcash", label: "GCash", icon: "📱" },
-  { key: "card", label: "Maya", icon: "📱" },
-];
-
 export default function Checkout() {
-  const { cart, removeFromCart } = useCart();
+  const { cart, clearCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
 
   const [fullName, setFullName] = useState(user?.name || "");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [requestedDeliveryAt, setRequestedDeliveryAt] = useState("");
   const [notes, setNotes] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const cartTotal = cart.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
+    (sum, item) => sum + (item.unitPrice ?? Number(item.product.price)) * item.quantity,
     0
   );
   const deliveryFee = cart.length > 0 ? 50 : 0;
@@ -51,18 +46,19 @@ const handlePlaceOrder = async (e) => {
   setSubmitting(true);
   try {
     await ordersApi.create({
-      items: cart.map(({ product, quantity }) => ({
-        productId: product.id,
-        quantity,
+      items: cart.map((item) => ({
+        productId: item.product.id,
+        quantity: item.quantity,
+        selectedOptions: item.selectedOptions || [],
       })),
       fullName,
       phone,
       address,
       notes,
-      paymentMethod,
+      requestedDeliveryAt,
     });
 
-    cart.forEach((item) => removeFromCart(item.product));
+    clearCart();
     navigate("/my-orders");
   } catch (err) {
     const msg =
@@ -86,6 +82,10 @@ const handlePlaceOrder = async (e) => {
       </section>
     );
   }
+
+  const currentTime = new Date();
+  currentTime.setMinutes(currentTime.getMinutes() - currentTime.getTimezoneOffset());
+  const minimumDeliveryTime = currentTime.toISOString().slice(0, 16);
 
   return (
     <section className="checkout-page">
@@ -113,28 +113,33 @@ const handlePlaceOrder = async (e) => {
             placeholder="Delivery Address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+            required
           />
+          <label className="checkout-delivery-time">
+            Requested delivery date and time
+            <input
+              type="datetime-local"
+              value={requestedDeliveryAt}
+              min={minimumDeliveryTime}
+              onChange={(event) => setRequestedDeliveryAt(event.target.value)}
+              required
+            />
+            <span>All times are in Agoo, La Union time. Sellers will see your requested arrival time.</span>
+          </label>
           <textarea
-            placeholder="Delivery notes (optional) \u2014 landmarks, gate code, etc."
+            placeholder="Delivery notes (optional) — landmarks, gate code, etc."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             className="checkout-notes"
           />
 
-          <h3 className="checkout-section-title">Payment Method</h3>
-          <div className="payment-methods">
-            {paymentMethods.map((method) => (
-              <button
-                type="button"
-                key={method.key}
-                className={`payment-option ${paymentMethod === method.key ? "active" : ""}`}
-                onClick={() => setPaymentMethod(method.key)}
-              >
-                <span className="payment-icon">{method.icon}</span>
-                {method.label}
-              </button>
-            ))}
+          <div className="checkout-payment-notice">
+            <Icon name="receipt" size={19} />
+            <div>
+              <strong>Payment can be decided later</strong>
+              <p>This test order will be saved without a payment method. No payment is collected at checkout.</p>
+            </div>
           </div>
 
           {error && <p className="auth-error">{error}</p>}
@@ -149,12 +154,17 @@ const handlePlaceOrder = async (e) => {
           <h3 className="checkout-section-title">Order Summary</h3>
 
           <div className="checkout-summary-list">
-            {cart.map(({ product, quantity }) => (
-              <div className="checkout-summary-item" key={product.id}>
+            {cart.map((item) => (
+              <div className="checkout-summary-item" key={item.id || item.product.id}>
                 <span>
-                  {quantity}x {product.name}
+                  {item.quantity}x {item.product.name}
+                  {(item.selectedOptions || []).map((option) => (
+                    <small className="checkout-summary-option" key={option.name}>
+                      {option.name}: {option.choice}
+                    </small>
+                  ))}
                 </span>
-                <span>₱{(product.price * quantity).toFixed(2)}</span>
+                <span>₱{((item.unitPrice ?? Number(item.product.price)) * item.quantity).toFixed(2)}</span>
               </div>
             ))}
           </div>

@@ -40,6 +40,10 @@ const Order = sequelize.define("Order", {
     allowNull: false,
     defaultValue: 0,
   },
+  requestedDeliveryAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
 });
 
 module.exports = Order;

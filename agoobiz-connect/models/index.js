@@ -6,6 +6,8 @@ const OrderItem = require("./OrderItem");
 const Review = require("./Review");
 const Announcement = require("./Announcement");
 const Message = require("./Message");
+const UserReport = require("./UserReport");
+const Follow = require("./Follow");
 
 // --- User <-> Product (a seller owns many products) ---
 User.hasMany(Product, { foreignKey: "sellerId", as: "products" });
@@ -41,6 +43,20 @@ User.hasMany(Message, { foreignKey: "receiverId", as: "receivedMessages" });
 Message.belongsTo(User, { foreignKey: "senderId", as: "sender" });
 Message.belongsTo(User, { foreignKey: "receiverId", as: "receiver" });
 
+// --- User follows (both relations point to User) ---
+User.hasMany(Follow, { foreignKey: "followerId", as: "following" });
+Follow.belongsTo(User, { foreignKey: "followerId", as: "follower" });
+User.hasMany(Follow, { foreignKey: "followingId", as: "followers" });
+Follow.belongsTo(User, { foreignKey: "followingId", as: "followedUser" });
+
+// --- User reports (reporter/reported user are separate User relations) ---
+User.hasMany(UserReport, { foreignKey: "reporterId", as: "submittedReports" });
+UserReport.belongsTo(User, { foreignKey: "reporterId", as: "reporter" });
+User.hasMany(UserReport, { foreignKey: "reportedUserId", as: "receivedReports" });
+UserReport.belongsTo(User, { foreignKey: "reportedUserId", as: "reportedUser" });
+Product.hasMany(UserReport, { foreignKey: "productId" });
+UserReport.belongsTo(Product, { foreignKey: "productId" });
+
 module.exports = {
   sequelize,
   User,
@@ -50,4 +66,6 @@ module.exports = {
   Review,
   Announcement,
   Message,
+  UserReport,
+  Follow,
 };

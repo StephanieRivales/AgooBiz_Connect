@@ -89,6 +89,9 @@ router.post("/login", async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return fail(res, 401, "Invalid email or password.");
 
+    if (user.isBlocked) {
+      return fail(res, 403, "Your account has been blocked. Please contact the AgooBiz admin.");
+    }
     if (!user.isActive) {
       return fail(res, 403, "Your account has been deactivated. Please contact the AgooBiz admin.");
     }

@@ -1,29 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../App.css";
 import logo from "../assets/logo.png";
-import { menus, menuPaths, menuIcons } from "../pages/menuConfig";
+import { menus } from "../pages/menuConfig";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import Icon from "./Icon";
 
-const guestNav = [
-  { label: "Discover", path: "/shop" },
-  { label: "Analytics", path: "/analytics" },
-  { label: "How It Works", path: "/#how-it-works" },
-];
-
-const sellerNav = [
-  { label: "Dashboard", path: "/" },
-  { label: "My Products", path: "/my-products" },
-  { label: "Orders", path: "/orders" },
-  { label: "Analytics", path: "/analytics" },
-];
-
-const adminNav = [
-  { label: "Dashboard", path: "/admin-dashboard" },
-  { label: "Users", path: "/admin/users" },
-  { label: "Analytics", path: "/analytics" },
-];
+const roleQuickLinks = {
+  guest: [
+    { label: "Discover", path: "/shop", icon: "store" },
+    { label: "How it works", path: "/#how-it-works", icon: "help" },
+  ],
+  buyer: [
+    { label: "Discover", path: "/shop", icon: "store" },
+    { label: "My orders", path: "/my-orders", icon: "receipt" },
+  ],
+  seller: [
+    { label: "My products", path: "/my-products", icon: "package" },
+    { label: "Orders", path: "/orders", icon: "receipt" },
+  ],
+  admin: [
+    { label: "Overview", path: "/admin-dashboard", icon: "layout" },
+    { label: "User reports", path: "/admin/reports", icon: "alert" },
+  ],
+};
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
@@ -31,30 +32,22 @@ export default function Header() {
   const { cart } = useCart();
   const role = user?.role || "guest";
   const location = useLocation();
-  const menuRef = useRef(null);
+  const menuSections = menus[role] || menus.guest;
+  const quickLinks = roleQuickLinks[role] || roleQuickLinks.guest;
 
   useEffect(() => {
-    const handleClick = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setShowMenu(false);
-      }
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setShowMenu(false);
     };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    setShowMenu(false);
+  }, [location.pathname]);
+
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-  const buyerNav = [
-    { label: "Discover", path: "/shop" },
-    { label: "My Orders", path: "/my-orders" },
-    { label: `Cart${cartCount > 0 ? ` (${cartCount})` : ""}`, path: "/cart" },
-  ];
-
-  const navLinks =
-    role === "seller" ? sellerNav :
-    role === "buyer"  ? buyerNav  :
-    role === "admin"  ? adminNav  : guestNav;
 
   return (
     <header className="header">
@@ -69,63 +62,98 @@ export default function Header() {
         </div>
       </Link>
 
-      <nav className="header-nav">
-        {navLinks.map((link) => (
+      <nav className="header-info-nav" aria-label={`${role} quick links`}>
+        {quickLinks.map((link) => (
           <Link
-            key={link.path}
             to={link.path}
-            className={`header-nav-link ${location.pathname === link.path ? "active" : ""}`}
+            key={link.path}
+            className={location.pathname === link.path ? "active" : ""}
           >
+            <Icon name={link.icon} size={17} />
             {link.label}
           </Link>
         ))}
       </nav>
 
-      <div className="header-right" ref={menuRef}>
-        {role === "guest" && (
-          <Link to="/register" className="register-business-btn">
-            Register Business
-          </Link>
-        )}
-
-        {role !== "guest" && (
-          <span className="header-user-chip">
-            {role === "seller" ? "🍲" : role === "admin" ? "🛡️" : "👤"}{" "}
-            {user?.name || user?.email?.split("@")[0] || role}
-          </span>
-        )}
-
+      <div className="header-right">
         <button
           className="menu-btn"
-          onClick={() => setShowMenu(!showMenu)}
-          aria-label="Menu"
+          onClick={() => setShowMenu((isOpen) => !isOpen)}
+          aria-label={showMenu ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={showMenu}
+          aria-controls="header-menu-drawer"
         >
-          <span className="menu-icon">{showMenu ? "✕" : "☰"}</span>
+          <Icon name={showMenu ? "close" : "menu"} className="menu-icon" size={24} />
         </button>
-
-        {showMenu && (
-          <nav className="dropdown-menu">
-            <div className="dropdown-header">
-              {role === "guest" ? "Welcome" : `Signed in as ${role}`}
-            </div>
-            <hr className="dropdown-divider" />
-            <ul>
-              {(menus[role] || menus.guest).map((item) => (
-                <li key={item}>
-                  <Link
-                    to={menuPaths[item] || "/"}
-                    onClick={() => setShowMenu(false)}
-                  >
-                    <span className="dropdown-icon">{menuIcons[item] || "•"}</span>
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )}
       </div>
+
+      {showMenu && (
+        <div className="menu-drawer-layer">
+          <button
+            type="button"
+            className="menu-drawer-backdrop"
+            onClick={() => setShowMenu(false)}
+            aria-label="Close navigation menu"
+          />
+          <nav
+            id="header-menu-drawer"
+            className="menu-drawer"
+            aria-label="Main navigation"
+          >
+            <div className="menu-drawer-header">
+              <div className="menu-drawer-user">
+                <span className="menu-drawer-avatar" aria-hidden="true">
+                  <Icon name={role === "seller" ? "store" : role === "admin" ? "shield" : "user"} size={22} />
+                </span>
+                <div>
+                  <p className="menu-drawer-eyebrow">{role === "guest" ? "Welcome to" : `Signed in as ${role}`}</p>
+                  <strong>{role === "guest" ? "AgooBiz Connect" : user?.name || user?.email?.split("@")[0] || role}</strong>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="menu-drawer-close"
+                onClick={() => setShowMenu(false)}
+                aria-label="Close navigation menu"
+              >
+                <Icon name="close" size={20} />
+              </button>
+            </div>
+
+            {menuSections.map((section) => (
+              <section className="menu-drawer-section" key={section.title}>
+                <h2>{section.title}</h2>
+                <ul>
+                  {section.items.map((item) => {
+                    return (
+                      <li key={item.path}>
+                        <Link
+                          to={item.path}
+                          className={`${item.danger ? "menu-drawer-link danger" : "menu-drawer-link"}${location.pathname === item.path ? " active" : ""}`}
+                          onClick={() => setShowMenu(false)}
+                          aria-current={location.pathname === item.path ? "page" : undefined}
+                        >
+                          <Icon name={item.icon} className="menu-drawer-icon" />
+                          <span>{item.label}</span>
+                          {item.showCartCount && cartCount > 0 && (
+                            <span className="menu-drawer-badge">{cartCount}</span>
+                          )}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            ))}
+            <nav className="menu-drawer-info-links" aria-label="About AgooBiz Connect">
+              <Link to="/#how-it-works" onClick={() => setShowMenu(false)}>How it works</Link>
+              <Link to="/#about" onClick={() => setShowMenu(false)}>About</Link>
+              <Link to="/#contact" onClick={() => setShowMenu(false)}>Contact</Link>
+            </nav>
+            <p className="menu-drawer-footer">Supporting local business in Agoo, La Union</p>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

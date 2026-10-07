@@ -19,9 +19,12 @@ async function authenticate(req, res, next) {
   try {
     // Check the account on every request so a deactivation takes effect right away,
     // even for someone who is already logged in.
-    const account = await User.findByPk(payload.id, { attributes: ["id", "isActive"] });
+    const account = await User.findByPk(payload.id, { attributes: ["id", "isActive", "isBlocked"] });
     if (!account) {
       return fail(res, 401, "Session expired. Please log in again.");
+    }
+    if (account.isBlocked) {
+      return fail(res, 403, "Your account has been blocked. Please contact the AgooBiz admin.");
     }
     if (!account.isActive) {
       return fail(res, 403, "Your account has been deactivated. Please contact the AgooBiz admin.");

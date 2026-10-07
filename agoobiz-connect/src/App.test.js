@@ -1,8 +1,9 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+test("shows AgooBiz Connect branding while the app initializes", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  expect(screen.getByAltText("AgooBiz Connect")).toBeInTheDocument();
+  expect(screen.getByText("Occasion food from Agoo's home kitchens")).toBeInTheDocument();
 });

@@ -3,6 +3,10 @@
   box-sizing: border-box;
 }
 
+button {
+  text-decoration: none;
+}
+
 body {
   margin: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;

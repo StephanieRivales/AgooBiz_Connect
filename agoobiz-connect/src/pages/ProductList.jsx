@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { productsApi } from "../api/productsApi";
-import { resolveImageUrl } from "../utils/resolveImageUrl";
+import ProductCard from "../components/ProductCard";
 import "../App.css";
 
 export default function ProductList() {
@@ -52,32 +51,16 @@ export default function ProductList() {
 
   return (
     <section className="shop-page">
-      <h2 className="shop-title">All Products</h2>
+      <div className="shop-header">
+        <div>
+          <h1 className="shop-title">All Products</h1>
+          <p className="shop-subtitle">Explore food and treats from local Agoo businesses.</p>
+        </div>
+      </div>
 
       <div className="product-grid">
         {products.map((product) => (
-          <Link
-            to={`/products/${product.id}`}
-            className="product-card product-card-link"
-            key={product.id}
-          >
-            <div className="product-image-wrap">
-              <img
-                src={resolveImageUrl(product.image)}
-                alt={product.name}
-                onError={(e) => (e.target.style.display = "none")}
-              />
-            </div>
-            <div className="product-info">
-              <span className="product-category">{product.category}</span>
-              <h3>{product.name}</h3>
-              <p className="product-seller">by {product.seller?.name || "Unknown Seller"}</p>
-              <div className="product-footer">
-                <span className="product-price">₱{product.price}</span>
-                <span className="view-details-link">View Details →</span>
-              </div>
-            </div>
-          </Link>
+          <ProductCard product={product} key={product.id} />
         ))}
       </div>
     </section>

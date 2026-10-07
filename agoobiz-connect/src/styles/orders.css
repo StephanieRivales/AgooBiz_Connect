@@ -133,6 +133,20 @@
   padding: 3px 0;
 }
 
+.order-item-options {
+  display: block;
+  margin-top: 3px;
+  color: #A9765A;
+  font-size: 12px;
+}
+
+.order-requested-arrival {
+  margin: 12px 0 0;
+  color: #4A3A2E;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .order-meta {
   margin-top: 10px;
   font-size: 13px;
@@ -151,6 +165,60 @@
   border-top: 1px solid #FBCBA0;
   padding-top: 10px;
   margin-top: 10px;
+}
+
+.buyer-cancel-order,
+.orders-retry-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  margin: 10px 0 4px;
+  padding: 8px 13px;
+  border: 1px solid #e4c7bb;
+  border-radius: 9px;
+  background: #fff8f5;
+  color: #9b3e2e;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.buyer-cancel-order:hover:not(:disabled),
+.orders-retry-button:hover:not(:disabled) {
+  background: #f9e9e3;
+}
+
+.buyer-cancel-order:disabled,
+.orders-retry-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.orders-browse-link {
+  display: inline-flex;
+  margin-top: 8px;
+  color: #a74721;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.orders-load-error,
+.orders-empty-state {
+  padding: 20px;
+  border: 1px solid #f0e2d5;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.orders-load-error .auth-error,
+.orders-empty-state .empty-state {
+  margin: 0;
+}
+
+.orders-load-error .orders-retry-button {
+  margin-top: 14px;
 }
 
 /* Responsive */

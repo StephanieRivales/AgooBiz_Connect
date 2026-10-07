@@ -8,12 +8,42 @@ const requireRole = require("../middleware/requireRole");
 const { ok, fail } = require("../lib/responses");
 const { productUpload } = require("../middleware/upload");
 
+const parseJsonArray = (value, fieldName) => {
+  if (Array.isArray(value)) return value;
+  if (typeof value !== "string") throw new Error(`${fieldName} must be a list.`);
+  const parsed = JSON.parse(value);
+  if (!Array.isArray(parsed)) throw new Error(`${fieldName} must be a list.`);
+  return parsed;
+};
+
+const validOptions = (options) =>
+  new Set(options.map((option) =>
+    typeof option?.name === "string" ? option.name.trim().toLowerCase() : ""
+  )).size === options.length &&
+  options.every((option) =>
+    option &&
+    typeof option.name === "string" &&
+    option.name.trim() &&
+    Array.isArray(option.choices) &&
+    option.choices.length > 0 &&
+    new Set(option.choices.map((choice) =>
+      typeof choice?.name === "string" ? choice.name.trim().toLowerCase() : ""
+    )).size === option.choices.length &&
+    option.choices.every((choice) =>
+      choice &&
+      typeof choice.name === "string" &&
+      choice.name.trim() &&
+      Number.isFinite(Number(choice.extraPrice)) &&
+      Number(choice.extraPrice) >= 0
+    )
+  );
+
 // Anyone can browse products — no login needed.
 // Supports ?category=Pancit and ?search=lechon to help narrow things down.
 router.get("/", async (req, res) => {
   try {
     const { category, search } = req.query;
-    const where = {};
+    const where = { isAvailable: true };
 
     if (category && category !== "All") where.category = category;
     if (search) where.name = { [Op.iLike]: `%${search}%` };
@@ -27,6 +57,18 @@ router.get("/", async (req, res) => {
     return ok(res, products);
   } catch (err) {
     return fail(res, 500, "We couldn't load the products right now. Please try again in a moment.", err);
+  }
+});
+
+router.get("/mine", authenticate, requireRole("seller"), async (req, res) => {
+  try {
+    const products = await Product.findAll({
+      where: { sellerId: req.user.id },
+      order: [["createdAt", "DESC"]],
+    });
+    return ok(res, products);
+  } catch (err) {
+    return fail(res, 500, "We couldn't load your listings right now.", err);
   }
 });
 
@@ -57,15 +99,32 @@ router.post("/", authenticate, requireRole("seller"), productUpload.single("imag
 
     const { name, description, price, category, stock } = req.body;
 
-    if (!name || !price || !category) {
-      return fail(res, 400, "Please fill in the product name, price, and category before saving.");
+    if (!name || !price) {
+      return fail(res, 400, "Please fill in the product name and price before saving.");
+    }
+
+    let occasions;
+    let options;
+    try {
+      occasions = parseJsonArray(req.body.occasions || "[]", "Celebrations");
+      options = parseJsonArray(req.body.options || "[]", "Product options");
+    } catch (err) {
+      return fail(res, 400, err.message);
+    }
+    if (!occasions.length || occasions.some((occasion) => typeof occasion !== "string" || !occasion.trim())) {
+      return fail(res, 400, "Choose at least one celebration for this product.");
+    }
+    if (!validOptions(options)) {
+      return fail(res, 400, "Each product option needs a name and at least one choice with a valid extra price.");
     }
 
     const product = await Product.create({
       name,
       description,
       price,
-      category,
+      category: occasions[0],
+      occasions,
+      options,
       image: req.file ? `/uploads/products/${req.file.filename}` : null,
       stock: stock ?? 0,
       sellerId: req.user.id,
@@ -91,7 +150,36 @@ router.put("/:id", authenticate, requireRole("seller", "admin"), productUpload.s
       return fail(res, 403, "You can only edit products from your own shop.");
     }
 
-    const updates = { ...req.body };
+    const updates = {};
+    ["name", "description", "price", "category", "stock"].forEach((field) => {
+      if (Object.prototype.hasOwnProperty.call(req.body, field)) updates[field] = req.body[field];
+    });
+    if (Object.prototype.hasOwnProperty.call(req.body, "isAvailable")) {
+      if (typeof req.body.isAvailable !== "boolean") {
+        return fail(res, 400, "Product availability must be set to available or not available.");
+      }
+      if (req.user.role !== "seller" || !isOwner) {
+        return fail(res, 403, "Only the seller who owns this product can change its availability.");
+      }
+      updates.isAvailable = req.body.isAvailable;
+    }
+    try {
+      if (Object.prototype.hasOwnProperty.call(req.body, "occasions")) {
+        updates.occasions = parseJsonArray(req.body.occasions, "Celebrations");
+        if (!updates.occasions.length || updates.occasions.some((occasion) => typeof occasion !== "string" || !occasion.trim())) {
+          return fail(res, 400, "Choose at least one celebration for this product.");
+        }
+        updates.category = updates.occasions[0];
+      }
+      if (Object.prototype.hasOwnProperty.call(req.body, "options")) {
+        updates.options = parseJsonArray(req.body.options, "Product options");
+        if (!validOptions(updates.options)) {
+          return fail(res, 400, "Each product option needs a name and at least one choice with a valid extra price.");
+        }
+      }
+    } catch (err) {
+      return fail(res, 400, err.message);
+    }
     if (req.file) {
       updates.image = `/uploads/products/${req.file.filename}`;
     }
@@ -103,18 +191,13 @@ router.put("/:id", authenticate, requireRole("seller", "admin"), productUpload.s
   }
 });
 
-// Remove a listing — same ownership rule as editing.
-router.delete("/:id", authenticate, requireRole("seller", "admin"), async (req, res) => {
+// Product listings are retained for order history; only admins may remove one.
+router.delete("/:id", authenticate, requireRole("admin"), async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
 
     if (!product) {
       return fail(res, 404, "That product doesn't exist anymore.");
-    }
-
-    const isOwner = product.sellerId === req.user.id;
-    if (req.user.role === "seller" && !isOwner) {
-      return fail(res, 403, "You can only delete products from your own shop.");
     }
 
     await product.destroy();

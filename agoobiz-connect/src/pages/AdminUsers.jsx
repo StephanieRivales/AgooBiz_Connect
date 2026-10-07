@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 import { usersApi } from "../api/usersApi";
+import Icon from "../components/Icon";
 import "../App.css";
 
 function initials(name) {
@@ -14,15 +15,17 @@ export default function AdminUsers() {
   const [error, setError] = useState("");
   const [actingOnId, setActingOnId] = useState(null);
 
-  const loadUsers = () => {
+  const loadUsers = useCallback(() => {
     setLoading(true);
     usersApi.getAll()
       .then((data) => setUsers(data || []))
       .catch(() => setError("We couldn't load the user list."))
       .finally(() => setLoading(false));
-  };
+  }, []);
 
-  useEffect(loadUsers, []);
+  useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
 
   const handleVerification = async (id, verificationStatus) => {
     setActingOnId(id);
@@ -42,17 +45,48 @@ export default function AdminUsers() {
   const handleToggleActive = async (u) => {
     const nextActive = u.isActive === false; // currently deactivated -> activate
     const verb = nextActive ? "activate" : "deactivate";
-    if (!nextActive && !window.confirm(`Deactivate ${u.name}? They won't be able to log in until you activate the account again.`)) return;
 
     setActingOnId(u.id);
     setError("");
     try {
-      await usersApi.update(u.id, { isActive: nextActive });
+      const updated = await usersApi.update(u.id, { isActive: nextActive });
       setUsers((prev) =>
-        prev.map((x) => (x.id === u.id ? { ...x, isActive: nextActive } : x))
+        prev.map((x) => (x.id === u.id ? { ...x, ...updated } : x))
       );
     } catch (err) {
       setError(err.response?.data?.message || `We couldn't ${verb} that account. Please try again.`);
+    } finally {
+      setActingOnId(null);
+    }
+  };
+
+  const handleToggleBlocked = async (u) => {
+    const nextBlocked = u.isBlocked !== true;
+    let moderationReason;
+    if (nextBlocked) {
+      moderationReason = window.prompt(
+        `Provide a reason (at least 10 characters) for blocking ${u.name}. This will be recorded.`
+      );
+      if (moderationReason === null) return;
+      if (moderationReason.trim().length < 10) {
+        setError("Provide a moderation reason of at least 10 characters.");
+        return;
+      }
+      if (!window.confirm(`Block ${u.name}? They will lose access until an admin unblocks the account.`)) return;
+    }
+
+    setActingOnId(u.id);
+    setError("");
+    try {
+      const updated = await usersApi.update(u.id, {
+        isBlocked: nextBlocked,
+        ...(moderationReason ? { moderationReason } : {}),
+      });
+      setUsers((prev) =>
+        prev.map((x) => (x.id === u.id ? { ...x, ...updated } : x))
+      );
+    } catch (err) {
+      setError(err.response?.data?.message || `We couldn't ${nextBlocked ? "block" : "unblock"} that account. Please try again.`);
     } finally {
       setActingOnId(null);
     }
@@ -100,21 +134,21 @@ export default function AdminUsers() {
 
       <div className="stat-grid">
         <div className="stat-card">
-          <span className="stat-icon">👥</span>
+          <span className="stat-icon"><Icon name="users" /></span>
           <div>
             <p className="stat-value">{users.length}</p>
             <p className="stat-label">Total Accounts</p>
           </div>
         </div>
         <div className="stat-card">
-          <span className="stat-icon">⏳</span>
+          <span className="stat-icon"><Icon name="clock" /></span>
           <div>
             <p className="stat-value">{pendingSellers.length}</p>
             <p className="stat-label">Pending Review</p>
           </div>
         </div>
         <div className="stat-card">
-          <span className="stat-icon">✅</span>
+          <span className="stat-icon"><Icon name="check" /></span>
           <div>
             <p className="stat-value">{approvedSellers}</p>
             <p className="stat-label">Approved Sellers</p>
@@ -144,7 +178,7 @@ export default function AdminUsers() {
                 </div>
 
                 <p className="pending-seller-location">
-                  📍 {u.barangay}
+                  <Icon name="activity" size={15} /> {u.barangay}
                   {u.address ? `, ${u.address}` : ""}
                 </p>
 
@@ -156,7 +190,7 @@ export default function AdminUsers() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      🪪 Valid ID
+                      <><Icon name="idCard" size={16} /> Valid ID</>
                     </a>
                   )}
                   {u.proofOfAddressUrl && (
@@ -166,7 +200,7 @@ export default function AdminUsers() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      📄 Proof of Address
+                      <><Icon name="receipt" size={16} /> Proof of Address</>
                     </a>
                   )}
                 </div>
@@ -178,7 +212,7 @@ export default function AdminUsers() {
                     disabled={actingOnId === u.id}
                     onClick={() => handleVerification(u.id, "approved")}
                   >
-                    ✓ Approve
+                    <><Icon name="check" size={16} /> Approve</>
                   </button>
                   <button
                     type="button"
@@ -186,7 +220,23 @@ export default function AdminUsers() {
                     disabled={actingOnId === u.id}
                     onClick={() => handleVerification(u.id, "rejected")}
                   >
-                    ✕ Reject
+                    <><Icon name="close" size={16} /> Reject</>
+                  </button>
+                  <button
+                    type="button"
+                    className={u.isActive === false ? "btn-text-activate" : "btn-text-deactivate"}
+                    disabled={actingOnId === u.id}
+                    onClick={() => handleToggleActive(u)}
+                  >
+                    {u.isActive === false ? "Activate" : "Deactivate"}
+                  </button>
+                  <button
+                    type="button"
+                    className={u.isBlocked ? "btn-text-activate" : "btn-text-deactivate"}
+                    disabled={actingOnId === u.id}
+                    onClick={() => handleToggleBlocked(u)}
+                  >
+                    {u.isBlocked ? "Unblock" : "Block"}
                   </button>
                 </div>
               </div>
@@ -205,13 +255,14 @@ export default function AdminUsers() {
               <th>User</th>
               <th>Role</th>
               <th>Status</th>
-              <th>Account</th>
+              <th>Activation</th>
+              <th>Moderation</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {everyoneElse.map((u) => (
-              <tr key={u.id} className={u.isActive === false ? "user-row-inactive" : ""}>
+              <tr key={u.id} className={u.isActive === false || u.isBlocked ? "user-row-inactive" : ""}>
                 <td>
                   <div className="user-name-cell">
                     <span className={`user-avatar user-avatar-${u.role}`}>{initials(u.name)}</span>
@@ -250,6 +301,16 @@ export default function AdminUsers() {
                     {u.isActive === false ? "Deactivated" : "Active"}
                   </span>
                 </td>
+                <td>
+                  <span className={`status-badge ${u.isBlocked ? "status-cancelled" : "status-ready"}`}>
+                    {u.isBlocked ? "Blocked" : "Not blocked"}
+                    {u.isBlocked && u.moderationReason && (
+                      <small className="admin-moderation-reason" title={u.moderationReason}>
+                        {u.moderationReason}
+                      </small>
+                    )}
+                  </span>
+                </td>
                 <td className="user-actions-cell">
                   {u.id !== currentAdmin?.id && (
                     <>
@@ -260,6 +321,14 @@ export default function AdminUsers() {
                         onClick={() => handleToggleActive(u)}
                       >
                         {u.isActive === false ? "Activate" : "Deactivate"}
+                      </button>
+                      <button
+                        type="button"
+                        className={u.isBlocked ? "btn-text-activate" : "btn-text-deactivate"}
+                        disabled={actingOnId === u.id}
+                        onClick={() => handleToggleBlocked(u)}
+                      >
+                        {u.isBlocked ? "Unblock" : "Block"}
                       </button>
                       <button
                         type="button"

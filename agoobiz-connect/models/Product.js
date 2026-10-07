@@ -17,10 +17,25 @@ const Product = sequelize.define("Product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  occasions: {
+    type: DataTypes.JSON,
+    allowNull: false,
+    defaultValue: [],
+  },
+  options: {
+    type: DataTypes.JSON,
+    allowNull: false,
+    defaultValue: [],
+  },
   stock: {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
+  },
+  isAvailable: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
   },
   image: {
     type: DataTypes.STRING, // URL or file path to the product photo

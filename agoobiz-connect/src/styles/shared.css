@@ -14,6 +14,25 @@
   margin: 40px 0;
 }
 
+.home-quick-links,
+.dashboard-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.home-quick-links > *,
+.dashboard-links > * {
+  margin: 0;
+  text-decoration: none;
+}
+
+.auth-submit-btn,
+.btn-primary {
+  text-decoration: none;
+}
+
 .cart-browse-link {
   display: block;
   width: fit-content;

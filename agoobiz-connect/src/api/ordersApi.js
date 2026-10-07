@@ -4,5 +4,6 @@ import api from "./api";
 export const ordersApi = {
   getAll: async () => (await api.get("/orders")).data.data,
   create: async (orderData) => (await api.post("/orders", orderData)).data.data,
+  cancel: async (id) => (await api.put(`/orders/${id}/cancel`)).data.data,
   updateStatus: async (id, status) => (await api.put(`/orders/${id}/status`, { status })).data.data,
 };

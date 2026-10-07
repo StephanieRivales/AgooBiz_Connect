@@ -27,6 +27,11 @@ import MyProducts from './pages/MyProducts.jsx';
 import ScrollToHash from './components/ScrollToHash.jsx';
 import SplashScreen from './components/SplashScreen.jsx';
 import AdminUsers from './pages/AdminUsers.jsx';
+import AdminReports from './pages/AdminReports.jsx';
+import Settings from './pages/Settings.jsx';
+import FAQ from './pages/FAQ.jsx';
+import People from './pages/People.jsx';
+import Unauthorized from './pages/Unauthorized.jsx';
 
 import './App.css';
 
@@ -61,12 +66,28 @@ export default function App() {
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/shop" element={<Shop />} />
-            <Route path="/my-orders" element={<MyOrders />} />
+            <Route path="/my-orders" element={
+              <ProtectedRoute allowedRoles={["buyer"]}>
+                <MyOrders />
+              </ProtectedRoute>
+            } />
+            <Route path="/unauthorized" element={<Unauthorized />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/analytics" element={<Analytics />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            } />
             <Route path="/chat" element={
               <ProtectedRoute>
                 <Chat />
+              </ProtectedRoute>
+            } />
+            <Route path="/people" element={
+              <ProtectedRoute>
+                <People />
               </ProtectedRoute>
             } />
             <Route path="/admin/users" element={
@@ -74,38 +95,43 @@ export default function App() {
                 <AdminUsers />
               </ProtectedRoute>
             } />
+            <Route path="/admin/reports" element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminReports />
+              </ProtectedRoute>
+            } />
             <Route path="/checkout" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["buyer"]}>
                 <Checkout />
               </ProtectedRoute>
             } />
             <Route path="/my-products" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["seller"]}>
                 <MyProducts />
               </ProtectedRoute>
             } />
             <Route path="/orders" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["seller"]}>
                 <OrderHistory />
               </ProtectedRoute>
             } />
             <Route path="/order-history" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["buyer", "seller"]}>
                 <OrderHistory />
               </ProtectedRoute>
             } />
             <Route path="/admin-dashboard" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["admin"]}>
                 <AdminDashboard />
               </ProtectedRoute>
             } />
             <Route path="/seller-dashboard" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["seller"]}>
                 <SellerDashboard />
               </ProtectedRoute>
             } />
             <Route path="/buyer-dashboard" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["buyer"]}>
                 <BuyerDashboard />
               </ProtectedRoute>
             } />

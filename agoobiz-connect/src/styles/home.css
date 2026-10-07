@@ -279,6 +279,21 @@
   scroll-margin-top: 100px;
 }
 
+#about,
+#how-it-works,
+#contact {
+  scroll-margin-top: 120px;
+}
+
+.home-about-section p {
+  max-width: 720px;
+  margin: 0 auto;
+  color: #4A3A2E;
+  font-size: 1rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
 .how-it-works-title {
   font-size: 1.6rem;
   color: #1E1610;

@@ -10,6 +10,19 @@ const categories = [
   "Christmas / Noche Buena", "Baptismal", "Graduation", "Wake / Lamay",
 ];
 
+const getProductOccasions = (product) => {
+  if (Array.isArray(product.occasions) && product.occasions.length) return product.occasions;
+  if (typeof product.occasions === "string") {
+    try {
+      const parsed = JSON.parse(product.occasions);
+      if (Array.isArray(parsed) && parsed.length) return parsed;
+    } catch {
+      return [product.category].filter(Boolean);
+    }
+  }
+  return [product.category].filter(Boolean);
+};
+
 export default function Shop() {
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
@@ -33,7 +46,10 @@ export default function Shop() {
         !q ||
         p.name.toLowerCase().includes(q) ||
         seller.toLowerCase().includes(q);
-      const matchCat = category === "All" || p.category === category;
+      const matchCat = category === "All" ||
+        getProductOccasions(p).some((occasion) =>
+          occasion.trim().toLowerCase() === category.toLowerCase()
+        );
       return matchSearch && matchCat;
     });
   }, [products, searchTerm, category]);

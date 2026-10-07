@@ -3,7 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const { fn, col, literal } = require("sequelize");
-const { Order, OrderItem, Product, User } = require("../models");
+const { Order, OrderItem, Product, User, UserReport } = require("../models");
 const authenticate = require("../middleware/auth");
 const requireRole = require("../middleware/requireRole");
 const { ok, fail } = require("../lib/responses");
@@ -208,11 +208,14 @@ router.get("/barangay-demand", async (req, res) => {
 // Admin: the big-picture numbers for the whole marketplace.
 router.get("/summary", authenticate, requireRole("admin"), async (req, res) => {
   try {
-    const [totalUsers, totalSellers, totalOrders, totalRevenue] = await Promise.all([
+    const [totalUsers, totalSellers, totalOrders, totalRevenue, pendingSellers, blockedUsers, pendingReports] = await Promise.all([
       User.count(),
       User.count({ where: { role: "seller" } }),
       Order.count(),
-      Order.sum("total"),
+      Order.sum("total", { where: { status: { [Op.ne]: "Cancelled" } } }),
+      User.count({ where: { role: "seller", verificationStatus: "pending" } }),
+      User.count({ where: { isBlocked: true } }),
+      UserReport.count({ where: { status: "pending" } }),
     ]);
 
     return ok(res, {
@@ -220,6 +223,9 @@ router.get("/summary", authenticate, requireRole("admin"), async (req, res) => {
       totalSellers,
       totalOrders,
       totalRevenue: totalRevenue || 0,
+      pendingSellers,
+      blockedUsers,
+      pendingReports,
     });
   } catch (err) {
     return fail(res, 500, "We couldn't generate the summary report.", err);
@@ -250,11 +256,15 @@ router.get("/seller", authenticate, requireRole("seller"), async (req, res) => {
     const orderItems = await OrderItem.findAll({
       include: [
         { model: Product, where: { sellerId: req.user.id } },
-        { model: Order, attributes: ["id", "status", "createdAt"] },
+        {
+          model: Order,
+          attributes: ["id", "status", "createdAt"],
+          where: { status: { [Op.ne]: "Cancelled" } },
+        },
       ],
     });
 
-    const totalSales = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const totalSales = orderItems.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
     const totalItemsSold = orderItems.reduce((sum, item) => sum + item.quantity, 0);
 
     return ok(res, { totalSales, totalItemsSold, orderItems });

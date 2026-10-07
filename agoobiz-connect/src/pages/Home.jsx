@@ -6,6 +6,7 @@ import Dropdown from "../components/Dropdown";
 import ProductCard from "../components/ProductCard";
 import { productsApi } from "../api/productsApi";
 import { usersApi } from "../api/usersApi";
+import SellerDashboard from "./SellerDashboard";
 import "../App.css";
 
 const categoryPills = [
@@ -58,92 +59,7 @@ export default function Home() {
     navigate(`/shop?search=${encodeURIComponent(pill)}`);
   };
 
-  if (role === "seller") {
-    const stats = [
-      { label: "Today's Orders", value: "8", icon: "📦" },
-      { label: "Pending", value: "3", icon: "⏳" },
-      { label: "Products", value: "12", icon: "🍲" },
-      { label: "This Week Sales", value: "₱4,250", icon: "💰" },
-    ];
-
-    const recentOrders = [
-      { id: "ORD-1042", buyer: "Maria S.", total: "₱320", status: "Pending" },
-      { id: "ORD-1041", buyer: "Juan D.", total: "₱180", status: "Preparing" },
-      { id: "ORD-1040", buyer: "Ana L.", total: "₱450", status: "Ready" },
-      { id: "ORD-1039", buyer: "Carlo R.", total: "₱95", status: "Completed" },
-    ];
-
-    return (
-      <section className="seller-dashboard">
-        <div className="seller-dash-header">
-          <div>
-            <h1>Kumusta, {user?.name || "Seller"}!</h1>
-            <p className="seller-dash-sub">
-              Manage your kitchen storefront · {user?.barangay || "Agoo, La Union"}
-            </p>
-          </div>
-          <Link to="/my-products" className="btn-primary">+ Add Product</Link>
-        </div>
-
-        <div className="stat-grid">
-          {stats.map((s) => (
-            <div className="stat-card" key={s.label}>
-              <span className="stat-icon">{s.icon}</span>
-              <div>
-                <p className="stat-value">{s.value}</p>
-                <p className="stat-label">{s.label}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="seller-dash-grid">
-          <div className="dash-panel">
-            <div className="dash-panel-head">
-              <h2>Recent Orders</h2>
-              <Link to="/orders">View all</Link>
-            </div>
-            <table className="orders-table">
-              <thead>
-                <tr>
-                  <th>Order</th>
-                  <th>Buyer</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map((o) => (
-                  <tr key={o.id}>
-                    <td>{o.id}</td>
-                    <td>{o.buyer}</td>
-                    <td>{o.total}</td>
-                    <td>
-                      <span className={`status-badge status-${o.status.toLowerCase()}`}>
-                        {o.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="dash-panel">
-            <div className="dash-panel-head">
-              <h2>Quick Actions</h2>
-            </div>
-            <ul className="quick-action-list">
-              <li><Link to="/my-products">My Products</Link></li>
-              <li><Link to="/orders">Manage Orders</Link></li>
-              <li><Link to="/analytics">Demand Analytics</Link></li>
-              <li><Link to="/chat">Messages</Link></li>
-            </ul>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  if (role === "seller") return <SellerDashboard />;
 
   if (role === "buyer") {
     const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -400,6 +316,15 @@ export default function Home() {
           </p>
         </div>
       )}
+
+      <section id="about" className="how-it-works-section home-about-section">
+        <h2 className="how-it-works-title">About AgooBiz Connect</h2>
+        <p>
+          AgooBiz Connect brings Agoo's buyers and local home-based food
+          businesses together, making it easier to discover, customize, and
+          order food for every occasion.
+        </p>
+      </section>
 
       <div id="how-it-works" className="how-it-works-section">
         <h2 className="how-it-works-title">How AgooBiz Connect works</h2>

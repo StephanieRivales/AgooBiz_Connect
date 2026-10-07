@@ -19,6 +19,11 @@ const OrderItem = sequelize.define("OrderItem", {
     type: DataTypes.DECIMAL(10, 2), // price at time of purchase, not live product price
     allowNull: false,
   },
+  selectedOptions: {
+    type: DataTypes.JSON,
+    allowNull: false,
+    defaultValue: [],
+  },
 });
 
 module.exports = OrderItem;
